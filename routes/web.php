@@ -9,6 +9,7 @@ use App\Livewire\Production\OrderDetailCreate;
 use App\Livewire\Production\OrderDetailList;
 use App\Livewire\Production\ProductionList;
 use App\Livewire\Production\ProductionMaterialForm;
+use App\Livewire\Production\ProductionMaterialList;
 use App\Models\ProductionMaterial;
 use Illuminate\Support\Facades\Route;
 
@@ -56,6 +57,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/produksi/material/{orderId}', ProductionMaterialForm::class)
     ->name('production.material.form');
+
+    Route::get('/produksi/material-list', ProductionMaterialList::class)->name('production.material.list');
 
     // Route::get('/produksi/orders/{order}/details', OrderDetailList::class)->name('details.index');
     // Route::get('/produksi/orders/{order}/details/create', OrderDetailCreate::class)->name('details.create');

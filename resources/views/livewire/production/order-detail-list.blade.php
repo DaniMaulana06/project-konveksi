@@ -22,6 +22,12 @@
         </button>
     @endif
 
+    @if ($order->status_order === 'selesai')
+    <button wire:click="updateStatus('dikirim')" class="btn btn-warning">
+        Kirim Produk
+    </button>
+    @endif
+
     @if (session()->has('message'))
         <div class="alert alert-info mt-3">
             {{ session('message') }}

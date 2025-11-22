@@ -33,7 +33,17 @@
                                 <td>{{ $order->id }}</td>
                                 <td>{{ $order->nama_customer }}</td>
                                 <td>{{ $order->tgl_order}}</td>
-                                <td>{{ $order->status_order }}</td>
+                                <td>
+                                    @if ($order ->status_order == 'pending')
+                                    <span class="badge text-bg-secondary">Pending</span>
+                                    @elseif ($order->status_order == 'proses')
+                                    <span class="badge text-bg-warning">Proses</span>
+                                    @elseif ($order->status_order == 'selesai')
+                                    <span class="badge text-bg-success">Selesai</span>
+                                    @elseif ($order->status_order == 'dikirim')
+                                    <span class="badge text-bg-info">Dikirim</span>
+                                    @endif
+                                </td>
                                 <td class="text-center">
                                     {{-- <a href="/order/edit/{{ $order->id }}" wire:navigate
                                         class="btn btn-sm btn-primary">EDIT</a> --}}

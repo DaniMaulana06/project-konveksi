@@ -1,5 +1,5 @@
 @section('title')
-Detail Order
+    Detail Order
 @endsection
 <div class="m-5">
     <h1 class="text-2xl font-bold mb-4">Detail Order</h1>
@@ -37,11 +37,23 @@ Detail Order
                     </tr>
                     <tr>
                         <td><strong>File Panduan</strong></td>
-                        <td>{{ $order->file_panduan }}</td>
+                        <td>
+                            <a href="{{ asset('storage/') . '/' . $order->file_panduan }}" target="_blank"> File Panduan</a>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong>Status</strong></td>
-                        <td>{{ $order->status_order }}</td>
+                        <td>
+                            @if ($order->status_order == 'pending')
+                                <span class="badge text-bg-secondary">Pending</span>
+                            @elseif ($order->status_order == 'proses')
+                                <span class="badge text-bg-warning">Proses</span>
+                            @elseif ($order->status_order == 'selesai')
+                                <span class="badge text-bg-success">Selesai</span>
+                            @elseif ($order->status_order == 'dikirim')
+                                <span class="badge text-bg-info">Dikirim</span>
+                            @endif
+                        </td>
                     </tr>
                 @empty
                     <tr>
