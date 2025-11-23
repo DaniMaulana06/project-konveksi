@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Order;
 
+use App\Livewire\Production\ProductionList;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductionListModel;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -43,7 +45,7 @@ class Create extends Component
         $filePath = $this->file_panduan->store('panduan_files', 'public');
 
         // Save the order data to the database
-        Order::create([
+        $order = Order::create([
             'tgl_order' => $validatedData['tgl_order'],
             'product_id' => $product->id,
             'nama_customer' => $validatedData['nama_customer'],
@@ -54,6 +56,11 @@ class Create extends Component
             'file_panduan' => $filePath,
         ]);
 
+        $pl = ProductionListModel::create([
+            'order_id' => $order->id,
+        ]);
+        
+
         // Provide feedback to the user
         session()->flash('message', 'Order berhasil disimpan dengan produk: ' . $product->nama_produk);
         return redirect()->route('order.index');
@@ -61,7 +68,7 @@ class Create extends Component
 
     public function render()
     {
-        $products = Product::all(); // Fetch all products
+        $products = Product::all(); 
         return view('livewire.order.create', compact('products'));
     }
 }

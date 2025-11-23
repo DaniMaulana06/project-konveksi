@@ -40,7 +40,7 @@ class Order extends Model
     public function materialProduction()
     {
         return $this->hasMany(ProductionMaterial::class);
-    }   
+    }
 
     // Relasi ke kebutuhan bahan produksi
     public function material()
@@ -56,5 +56,16 @@ class Order extends Model
             }
         });
     }
+
+    public function productionMaterials()
+    {
+        return $this->hasMany(\App\Models\ProductionMaterial::class, 'production_list_id');
+    }
+
+    public function productionList()
+{
+    return $this->hasOne(\App\Models\ProductionListModel::class, 'order_id');
+}
+
 
 }

@@ -15,6 +15,7 @@ class ProductionMaterial extends Model
         'stok_tersedia',
         'satuan',
         'harga_per_unit',
+        'keterangan'
     ];
 
     // Relasi ke tabel material

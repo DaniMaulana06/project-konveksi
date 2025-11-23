@@ -4,8 +4,10 @@ Production Material List
 
 <div class="m-5">
     <h3>Daftar Bahan Produksi</h3>
+<div class="container md-5 mt-5">
 
-    <table class="table table-bordered mt-3">
+</div>
+    <table class="table table-striped table-hover table-bordered">
         <thead>
             <tr>
                 <th>No</th>

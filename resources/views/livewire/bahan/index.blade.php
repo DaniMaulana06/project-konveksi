@@ -11,6 +11,7 @@ Bahan
                 <th>No</th>
                 <th>Nama Bahan</th>
                 <th>Satuan</th>
+                <th>Stok</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@ Bahan
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $b->nama_bahan }}</td>
                 <td>{{ $b->satuan }}</td>
+                <td>{{ $b->stok }}</td>
                 <td class="text-center">
                     <button class="btn btn-sm btn-danger" wire:click="destroy({{ $b->id }})">
                         Hapus

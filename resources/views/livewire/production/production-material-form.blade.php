@@ -3,54 +3,67 @@
 @endsection
 
 <div class="m-5">
+    @if (session()->has('message'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('message') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="card">
         <div class="card-body">
             <form wire:submit.prevent="save">
+
                 <input type="hidden" wire:model="production_list_id">
+                @foreach($inputs as $index => $input)
 
+                    <div class="row border rounded p-3 mb-3 bg-light">
 
-                <!-- Material Select -->
-                <div class="form-group mb-3">
-                    <label for="material_id" class="form-label">Pilih Bahan</label>
-                    <select id="material_id" wire:model.live="material_id"
-                        class="form-control @error('material_id') is-invalid @enderror">
-                        <option value="">-- Pilih Bahan --</option>
-                        @foreach($materials as $material)
-                            <option value="{{ $material['id'] }}">{{ $material['nama_bahan'] }}</option>
-                        @endforeach
-                    </select>
-                    @error('material_id') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
+                        <!-- Nama Bahan -->
+                        <div class="col-md-4">
+                            <label>Nama Bahan</label>
+                            <select class="form-control" wire:model="inputs.{{ $index }}.material_id">
+                                <option value="">-- Pilih Bahan --</option>
+                                @foreach($materials as $mat)
+                                    <option value="{{ $mat->id }}">{{ $mat->nama_bahan }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                <!-- Stok Awal -->
-                <div class="form-group mb-3">
-                    <label for="stok_awal" class="form-label">Stok Awal</label>
-                    <input id="stok_awal" type="text" class="form-control" wire:model="stok_awal" readonly
-                        placeholder="Pilih bahan terlebih dahulu">
-                </div>
+                        <!-- Stok -->
+                        <div class="col-md-2">
+                            <label>Stok</label>
+                            <input type="text" class="form-control" wire:model="inputs.{{ $index }}.stok" readonly>
+                        </div>
 
-                <!-- Satuan -->
-                <div class="form-group mb-3">
-                    <label for="satuan" class="form-label">Satuan</label>
-                    <input id="satuan" type="text" class="form-control" wire:model="satuan" readonly
-                        placeholder="Pilih bahan terlebih dahulu">
-                </div>
+                        <!-- Jumlah pakai -->
+                        <div class="col-md-2">
+                            <label>Jumlah Dipakai</label>
+                            <input type="number" class="form-control" wire:model="inputs.{{ $index }}.jumlah">
+                        </div>
 
-                <!-- Jumlah -->
-                <div class="form-group mb-3">
-                    <label for="jumlah" class="form-label">Jumlah</label>
-                    <input id="jumlah" type="number" class="form-control @error('jumlah') is-invalid @enderror"
-                        wire:model="jumlah" min="1" required>
-                    @error('jumlah') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
+                        <!-- Keterangan -->
+                        <div class="col-md-3">
+                            <label>Keterangan</label>
+                            <input type="text" class="form-control" wire:model="inputs.{{ $index }}.keterangan">
+                        </div>
 
-                <!-- Keterangan -->
-                <div class="form-group mb-3">
-                    <label for="keterangan" class="form-label">Keterangan</label>
-                    <textarea id="keterangan" class="form-control" wire:model="keterangan" rows="3"></textarea>
-                </div>
+                        <!-- Hapus -->
+                        <div class="col-md-1 d-flex align-items-end">
+                            <button type="button" class="btn btn-danger" wire:click="removeInput({{ $index }})">
+                                X
+                            </button>
+                        </div>
 
-                <button type="submit" class="btn btn-primary">Simpan Bahan Produksi</button>
+                    </div>
+
+                @endforeach
+
+                <button type="button" class="btn btn-primary mb-3" wire:click="addInput">
+                    + Tambah Bahan
+                </button>
+
+                <button class="btn btn-success w-100">Simpan Semua Bahan</button>
+
             </form>
         </div>
     </div>
