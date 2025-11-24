@@ -26,15 +26,14 @@ class OrderDetailList extends Component
     }
 
     public function render()
-{
-    $order = Order::with([
-        'product',
-        'productionList.materials.material'
-    ])->findOrFail($this->orderId);
+    {
+        $order = Order::with([
+            'product',
+            'productionList.materials.material'
+        ])->findOrFail($this->orderId);
 
-    return view('livewire.production.order-detail-list', [
-        'order' => $order,
-    ]);
-}
-
+        return view('livewire.production.order-detail-list', [
+            'order' => $order,
+        ]);
+    }
 }

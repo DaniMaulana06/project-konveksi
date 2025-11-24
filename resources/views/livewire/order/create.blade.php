@@ -8,13 +8,7 @@
             <div class="card border-0 shadow-sm rounded">
                 <div class="card-body">
                     <form wire:submit="store" enctype="multipart/form-data">
-                        
-                        <div class="form-group mb-4">
-                            <label for="tgl_order">Tanggal Order</label>
-                            <input type="date" class="form-control" id="tgl_order" wire:model="tgl_order">
-                            @error('tgl_order') <span>{{ $message }}</span> @enderror
-                        </div>
-
+            
                         <div class="form-group mb-4">
                             <label for="product_id">Produk</label>
                             <select class="form-control" id="product_id" wire:model="product_id">

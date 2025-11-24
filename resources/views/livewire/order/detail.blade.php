@@ -13,7 +13,12 @@
                     </tr>
                     <tr>
                         <td><strong>Tanggal Order</strong></td>
-                        <td>{{ $order->tgl_order }}</td>
+                        <td>{{ $order->created_at->format('d M Y') }}
+                            <br>
+                            <small class="text-muted">
+                                {{$order->created_at->format('H:i')}}
+                            </small>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong>Nama Customer</strong></td>
@@ -33,7 +38,7 @@
                     </tr>
                     <tr>
                         <td><strong>Total Harga</strong></td>
-                        <td>Rp{{ $order->harga_total }}</td>
+                        <td>Rp{{ number_format($order->harga_total, 0, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <td><strong>File Panduan</strong></td>
@@ -63,5 +68,6 @@
             </tbody>
         </table>
         <a href="/order" wire:navigate class="btn btn-sm btn-primary">Kembali</a>
+        <a href="/order/edit/{{ $order->id }}" class="btn btn-sm btn-warning">Edit</a>
     </div>
 </div>

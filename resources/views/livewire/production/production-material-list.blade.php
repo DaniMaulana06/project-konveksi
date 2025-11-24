@@ -29,7 +29,7 @@ Production Material List
                     <td>{{ $pm->jumlah }}</td>
                     <td>{{ $pm->keterangan }}</td>
                     <td>{{ $pm->productionList->id }}</td>
-                    <td>{{ $pm->created_at->format('d-m-Y') }}</td>
+                    <td>{{ $pm->created_at->format('d-M-Y') }}</td>
                 </tr>
             @empty
                 <tr>

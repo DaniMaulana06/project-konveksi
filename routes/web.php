@@ -11,6 +11,7 @@ use App\Livewire\Production\ProductionList;
 use App\Livewire\Production\ProductionMaterialForm;
 use App\Livewire\Production\ProductionMaterialList;
 use App\Models\ProductionMaterial;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,6 +34,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', Index::class)->name('order.index');
         Route::get('/create', \App\Livewire\Order\Create::class)->name('order.create');
         Route::get('/detail/{id}', \App\Livewire\Order\Detail::class)->name('order.detail');
+        Route::get('/edit/{id}', \App\Livewire\Order\Edit::class)->name('order.edit');
     });
 
     Route::prefix('product')->group(function () {

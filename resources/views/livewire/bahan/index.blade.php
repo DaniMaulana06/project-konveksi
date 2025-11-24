@@ -23,6 +23,7 @@ Bahan
                 <td>{{ $b->satuan }}</td>
                 <td>{{ $b->stok }}</td>
                 <td class="text-center">
+                    <a href="{{ route('bahan.edit', $b->id) }}" class="btn btn-sm btn-warning text-center text-white">Edit</a>
                     <button class="btn btn-sm btn-danger" wire:click="destroy({{ $b->id }})">
                         Hapus
                     </button>

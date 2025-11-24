@@ -8,7 +8,6 @@ class Order extends Model
 {
     protected $table = 'order';
     protected $fillable = [
-        'tgl_order',
         'nama_customer',
         'no_telp',
         'asal_instansi',
