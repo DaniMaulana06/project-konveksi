@@ -41,6 +41,7 @@
                                         class="btn btn-sm btn-primary">EDIT</a> --}}
                                     <button wire:click="destroy({{ $product->id }})"
                                         class="btn btn-sm btn-danger">DELETE</button>
+                                        <a href="{{route('product.edit', $product->id)}}" class="btn btn-sm btn-warning" wire:navigate>Edit</a>
                                 </td>
                             </tr>
                         @empty

@@ -9,7 +9,7 @@ class ProductionMaterialList extends Component
 {
     public function render()
     {
-        $pm_list = ProductionMaterial::with(['material', 'productionList'])->get();
+        $pm_list = ProductionMaterial::with(['material', 'productionList'])->get()->groupBy('production_list_id');
         return view('livewire.production.production-material-list', [
             'pm_list' => $pm_list
         ]);

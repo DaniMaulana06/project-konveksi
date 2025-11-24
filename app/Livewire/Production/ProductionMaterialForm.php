@@ -78,6 +78,13 @@ class ProductionMaterialForm extends Component
                 continue;
             }
 
+            $material = Bahan::find($inp['material_id']);
+
+            if ($inp['jumlah'] > $material->stok) {
+                session()->flash('error', "Jumlah bahan '{$material->nama_bahan}' melebihi stok tersedia ({$material->stok}).");
+                return;
+            }
+
             ProductionMaterial::create([
                 'production_list_id' => $this->production_list_id,
                 'material_id' => $inp['material_id'],

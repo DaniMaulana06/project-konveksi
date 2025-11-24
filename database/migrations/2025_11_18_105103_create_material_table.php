@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('material', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_bahan');
-            $table->enum('satuan', ['meter', 'kilogram', 'lembar', 'buah', 'roll']);
+            $table->enum('satuan', ['meter', 'kilogram', 'lembar', 'buah', 'roll', 'pcs']);
             $table->integer('stok');
             $table->timestamps();
         });

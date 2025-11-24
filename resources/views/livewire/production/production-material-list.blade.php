@@ -1,42 +1,48 @@
 @section('title')
-Production Material List
+    Production Material List
 @endsection
 
 <div class="m-5">
-    <h3>Daftar Bahan Produksi</h3>
-<div class="container md-5 mt-5">
+    <div class="container mt-4">
+        <h2 class="mb-4">Daftar Material Produksi</h2>
+        <div class="accordion" id="materialAccordion">
+            @foreach ($pm_list as $prodId => $items)
+                <div class="accordion-item mb-2">
+                    <h2 class="accordion-header" id="heading{{ $prodId }}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ $prodId }}" aria-expanded="false"
+                            aria-controls="collapse{{ $prodId }}">
 
-</div>
-    <table class="table table-striped table-hover table-bordered">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Bahan</th>
-                <th>Satuan</th>
-                <th>Jumlah Dipakai</th>
-                <th>Keterangan</th>
-                <th>Production ID</th>
-                <th>Dibuat Pada</th>
-            </tr>
-        </thead>
+                            Production List ID: {{ $prodId }}
+                        </button>
+                    </h2>
+                    <div id="collapse{{ $prodId }}" class="accordion-collapse collapse"
+                        aria-labelledby="heading{{ $prodId }}" data-bs-parent="#materialAccordion">
+                        <div class="accordion-body">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Nama Material</th>
+                                        <th>Jumlah</th>
+                                        <th>Keterangan</th>
+                                    </tr>
+                                </thead>
 
-        <tbody>
-            @forelse($pm_list as $index => $pm)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $pm->material->nama_bahan }}</td>
-                    <td>{{ $pm->material->satuan }}</td>
-                    <td>{{ $pm->jumlah }}</td>
-                    <td>{{ $pm->keterangan }}</td>
-                    <td>{{ $pm->productionList->id }}</td>
-                    <td>{{ $pm->created_at->format('d-M-Y') }}</td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="7" class="text-center">Belum ada data bahan produksi.</td>
-                </tr>
-            @endforelse
-        </tbody>        
-    </table>
-    <a href="/produksi" wire:navigate class="btn btn-sm btn-warning">Kembali</a>
+                                <tbody>
+                                    @foreach ($items as $row)
+                                        <tr>
+                                            <td>{{ $row->material->nama_bahan }}</td>
+                                            <td>{{ $row->jumlah }}</td>
+                                            <td>{{ $row->keterangan }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        <a href="/produksi" wire:navigate class="btn btn-sm btn-warning">Kembali</a>
+    </div>
 </div>
