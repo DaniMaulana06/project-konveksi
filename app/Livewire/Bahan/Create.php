@@ -11,7 +11,7 @@ class Create extends Component
 {
     #[Rule('required|string|max:50')]
     public $nama_bahan;
-    #[Rule('required|string|in:meter,kilogram,lembar,buah,roll')]
+    #[Rule('required|string|in:meter,kilogram,lembar,buah,roll,pcs')]
     public $satuan;
     #[Rule('required')]
     public $stok;

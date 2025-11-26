@@ -3,7 +3,7 @@
 @endsection
 
 <div class="container my-4">
-{{-- Detail Order --}}
+    {{-- Detail Order --}}
     <div class="card shadow-sm border-0 rounded-3">
         <div class="card-header bg-primary text-white">
             <h4 class="mb-0">Detail Order </h4>
@@ -13,6 +13,10 @@
 
             <table class="table table-bordered">
                 <tbody>
+                    <tr>
+                        <th>Nama Order</th>
+                        <td>{{ $order->nama_order }}</td>
+                    </tr>
                     <tr>
                         <th>Tanggal Order</th>
                         <td>{{ $order->created_at->format('d M Y') }}
@@ -69,24 +73,18 @@
             </table>
 
             <div class="mt-3">
-                {{-- BUTTON AKSI --}}
-                @if($order->status_order === 'pending')
-                    <button wire:click="updateStatus('proses')" class="btn btn-warning">
-                        Mulai Produksi
-                    </button>
-                @endif
-
                 @if($order->status_order === 'proses')
-                    <button wire:click="updateStatus('selesai')" class="btn btn-success">
+                    <button wire:click="$dispatch('konfirmasi-status', { status: 'selesai' })" class="btn btn-success">
                         Tandai Produksi Selesai
                     </button>
                 @endif
 
                 @if ($order->status_order === 'selesai')
-                    <button wire:click="updateStatus('dikirim')" class="btn btn-primary">
+                    <button wire:click="$dispatch('konfirmasi-status', { status: 'dikirim' })" class="btn btn-primary">
                         Kirim Produk
                     </button>
                 @endif
+
             </div>
 
             @if (session()->has('message'))
@@ -99,13 +97,13 @@
     </div>
 
     {{-- Input Bahan --}}
-    <div class="card shadow-sm border-0 rounded-3 mt-3 mb-5">
+    <div class="card shadow-sm border-0 rounded-3 mt-3 mb-2">
         <div class="card-header bg-primary text-white">
             <h4 class="mb-0">Bahan Yang Digunakan </h4>
         </div>
 
         <div class="card-body">
-    
+
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -117,7 +115,7 @@
                         <th>Keterangan</th>
                     </tr>
                 </thead>
-    
+
                 <tbody>
                     @if ($order->productionList)
                         @forelse($order->productionList->materials as $index => $pm)
@@ -145,13 +143,36 @@
                         </tr>
                     @endif
                 </tbody>
-    
+
             </table>
             <a href="{{ route('production.material.form', $order->id) }}" class="btn btn-success btn-sm">
                 Input Bahan
             </a>
         </div>
     </div>
-
-    
+    <a href="/produksi/" class="btn btn-m btn-danger mb-5 float-end" wire:navigate>Kembali</a>
 </div>
+@push('scripts')
+<script>
+    document.addEventListener('livewire:init', () => {
+
+        Livewire.on('konfirmasi-status', data => {
+
+            Swal.fire({
+                title: "Yakin ingin mengubah status?",
+                text: "Status akan diubah menjadi: " + data.status.toUpperCase(),
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Ya, Ubah!",
+                cancelButtonText: "Batal",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('update-status-final', { status: data.status });
+                }
+            });
+
+        });
+
+    });
+</script>
+@endpush

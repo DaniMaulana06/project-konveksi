@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Product;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Pest\Mutate\Mutators\Math\CeilToFloor;
 
 class Edit extends Component
 {
@@ -17,8 +19,8 @@ class Edit extends Component
     #[Rule('required|string|max:100')]
     public $nama_produk;
 
-    #[Rule('required|string|in:jersey,kemeja,idcard,topi')]
-    public $kategori_produk;
+    #[Rule('required|exists:categories,id')]
+    public $category_id;
 
     #[Rule('required|string|max:50')]
     public $deskripsi_produk;
@@ -36,7 +38,7 @@ class Edit extends Component
         $this->product_id = $id;
 
         $this->nama_produk = $product->nama_produk;
-        $this->kategori_produk = $product->kategori_produk;
+        $this->category_id = $product->category_id;
         $this->deskripsi_produk = $product->deskripsi_produk;
         $this->gambar_lama = $product->gambar;
     }
@@ -64,7 +66,7 @@ class Edit extends Component
 
         $product->update([
             'nama_produk' => $this->nama_produk,
-            'kategori_produk' => $this->kategori_produk,
+            'category_id' => $this->category_id,
             'deskripsi_produk' => $this->deskripsi_produk,
             'gambar' => $gambarPath,
         ]);
@@ -75,6 +77,8 @@ class Edit extends Component
 
     public function render()
     {
-        return view('livewire.product.edit');
+        return view('livewire.product.edit', [
+            'categories' => Category::all()
+        ]);
     }
 }

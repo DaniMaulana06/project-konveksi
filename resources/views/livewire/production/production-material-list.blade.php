@@ -13,7 +13,7 @@
                             data-bs-target="#collapse{{ $prodId }}" aria-expanded="false"
                             aria-controls="collapse{{ $prodId }}">
 
-                            Production List ID: {{ $prodId }}
+                            {{ $items->first()->productionList->order->nama_order }}
                         </button>
                     </h2>
                     <div id="collapse{{ $prodId }}" class="accordion-collapse collapse"

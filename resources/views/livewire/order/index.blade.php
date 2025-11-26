@@ -12,7 +12,7 @@
                 </div>
             @endif
             <!-- end flash message -->
-            <a href="/order/create" wire:navigate class="btn btn-md btn-success rounded shadow-sm border-0 mb-3">ADD NEW
+            <a href="/order/create" wire:navigate class="btn btn-md btn-success rounded shadow-sm border-0 mb-3">TAMBAH
                 ORDER</a>
             <div class="card-body">
                 <table class="table table-striped table-hover table-bordered">
@@ -20,8 +20,9 @@
                         <tr>
                             <th>No</th>
                             <th>Order ID</th>
-                            <th>Customer Name</th>
-                            <th>Order Date</th>
+                            <th>Nama Order</th>
+                            <th>Nama Customer</th>
+                            <th>Tanggal Order</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -31,6 +32,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $order->id }}</td>
+                                <td>{{ $order->nama_order }}</td>
                                 <td>{{ $order->nama_customer }}</td>
                                 <td>{{ $order->created_at->format('d M Y') }}
                                     <br>

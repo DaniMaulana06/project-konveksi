@@ -12,6 +12,14 @@
                         <td>{{ $order->id }}</td>
                     </tr>
                     <tr>
+                        <td><strong>Nama Customer</strong></td>
+                        <td>{{ $order->nama_customer }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nama Order</strong>
+                        <td>{{ $order->nama_order }}</td></td>
+                    </tr>
+                    <tr>
                         <td><strong>Tanggal Order</strong></td>
                         <td>{{ $order->created_at->format('d M Y') }}
                             <br>
@@ -19,10 +27,6 @@
                                 {{$order->created_at->format('H:i')}}
                             </small>
                         </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Nama Customer</strong></td>
-                        <td>{{ $order->nama_customer }}</td>
                     </tr>
                     <tr>
                         <td><strong>Nomor Telepon</strong></td>

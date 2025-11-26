@@ -12,6 +12,7 @@ class Edit extends Component
     use WithFileUploads;
     public $orderId;
     public $product_id;
+    public $nama_order;
     public $nama_customer;
     public $no_telp;
     public $asal_instansi;
@@ -25,8 +26,7 @@ class Edit extends Component
     public function mount($id)
     {
         $this->order = Order::findOrFail($id);
-
-        // isi field lain
+        $this->nama_order = $this->order->nama_customer;
         $this->nama_customer   = $this->order->nama_customer;
         $this->no_telp         = $this->order->no_telp;
         $this->asal_instansi   = $this->order->asal_instansi;
@@ -42,6 +42,7 @@ class Edit extends Component
     public function update()
     {
         $validated = $this->validate([
+            'nama_order' => 'required|max:50',
             'nama_customer' => 'required|max:50',
             'no_telp' => 'required|max:12',
             'asal_instansi' => 'nullable|max:100',

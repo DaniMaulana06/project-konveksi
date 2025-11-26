@@ -3,32 +3,48 @@
 namespace App\Livewire\Production;
 
 use App\Models\Bahan;
+use App\Models\Order;
 use App\Models\ProductionListModel;
 use Livewire\Component;
 use App\Models\ProductionMaterial;
-
 class ProductionMaterialForm extends Component
 {
     public $production_list_id;
     public $materials = [];
     public $inputs = [];
+    public $existingMaterials = false;
+    public $hasMaterials = false;
 
     public function mount($orderId)
     {
         $production = ProductionListModel::where('order_id', $orderId)->first();
-
-        $this->production_list_id = $production->id;   // ✔ BENAR — ini FK valid
-
+        $this->production_list_id = $production->id;
+    
         $this->materials = Bahan::all();
 
-        $this->inputs[] = [
-            'material_id' => '',
-            'stok' => '',
-            'jumlah' => '',
-            'keterangan' => '',
-        ];
+        $existing = ProductionMaterial::where('production_list_id', $this->production_list_id)->get();
+    
+        if ($existing->isNotEmpty()) {
+            $this->hasMaterials = true;
+            foreach ($existing as $mat) {
+                $bahan = Bahan::find($mat->material_id);
+                $this->inputs[] = [
+                    'material_id' => $mat->material_id,
+                    'stok' => $bahan ? $bahan->stok : 0,
+                    'jumlah' => $mat->jumlah,
+                    'keterangan' => $mat->keterangan,
+                ];
+            }
+        } else {
+            $this->inputs[] = [
+                'material_id' => '',
+                'stok' => '',
+                'jumlah' => '',
+                'keterangan' => '',
+            ];
+        }
     }
-
+    
 
     public function updatedInputs($value, $key)
     {
@@ -98,14 +114,30 @@ class ProductionMaterialForm extends Component
             $material->save();
         }
 
+        $this->hasMaterials = true;
+
+
         session()->flash('message', 'Semua bahan berhasil disimpan.');
-        return redirect()->route('production.material.list');
+    }
+
+    public function updateStatus($status)
+    {
+        $production = ProductionListModel::findOrFail($this->production_list_id);
+
+        $order = $production->order; // pastikan relasi 'order' ada di model ProductionListModel
+    
+        $order->update([
+            'status_order' => $status
+        ]);
+    
+        session()->flash('message', 'Status berhasil diperbarui!');
+        return redirect()->route('production.index');
     }
 
     public function render()
     {
         return view('livewire.production.production-material-form', [
-            'materials' => Bahan::all()
+            'materials' => Bahan::all(),
         ]);
     }
 }

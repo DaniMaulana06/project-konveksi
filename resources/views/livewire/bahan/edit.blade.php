@@ -30,11 +30,9 @@
                     <label class="form-label">Satuan</label>
                     <select wire:model="satuan" class="form-select">
                         <option value="">-- Pilih Satuan --</option>
-                        <option value="meter">Meter</option>
-                        <option value="kilogram">Kilogram</option>
-                        <option value="lembar">Lembar</option>
-                        <option value="buah">Buah</option>
-                        <option value="roll">Roll</option>
+                        @foreach ($bahan as $b)
+                            <option value="{{ $b->satuan }}">{{ $b->satuan }}</option>
+                        @endforeach
                     </select>
                     @error('satuan')
                         <small class="text-danger">{{ $message }}</small>
@@ -51,11 +49,13 @@
                 </div>
 
                 <div class="d-flex justify-content-end">
+                    
+                <a href="/bahan" class="btn btn-m btn-danger px-3 me-3" wire:navigate>Batal</a>
                     <button class="btn btn-primary px-4">
                         <i class="bi bi-save"></i> Update
                     </button>
+                    
                 </div>
-
             </form>
         </div>
     </div>

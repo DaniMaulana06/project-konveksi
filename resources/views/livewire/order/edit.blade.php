@@ -18,6 +18,12 @@ Edit Order
             <form wire:submit.prevent="update">
                 <input type="hidden" name="id" value="{{ $order->id }}">
 
+                <div class="form-group mb-3">
+                    <label for="nama_order">Nama Order</label>
+                    <input type="text" class="form-control" id="nama_order" wire:model="nama_order">
+                    @error('nama_order') <span>{{ $message }}</span> @enderror
+                </div>
+
                 <div class="mb-3">
                     <label class="form-label">Pilih Produk</label>
                     <select wire:model="product_id" class="form-control">
@@ -81,6 +87,7 @@ Edit Order
                 </div>
 
                 <button class="btn btn-success">Update Order</button>
+                <a href="/order" wire:navigate class="btn btn-m btn-danger">Batal</a>
             </form>
 
         </div>

@@ -10,7 +10,6 @@ use App\Livewire\Production\OrderDetailList;
 use App\Livewire\Production\ProductionList;
 use App\Livewire\Production\ProductionMaterialForm;
 use App\Livewire\Production\ProductionMaterialList;
-use App\Models\ProductionMaterial;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +36,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/edit/{id}', \App\Livewire\Order\Edit::class)->name('order.edit');
     });
 
+    Route::prefix('kategori')->group(function () {
+        Route::get('/', \App\Livewire\Category\Index::class)->name('category.index');
+        Route::get('/create', \App\Livewire\Category\Create::class)->name('category.create');
+        Route::get('/edit/{id}', \App\Livewire\Category\Edit::class)->name('category.edit');
+    });
+
     Route::prefix('product')->group(function () {
         Route::get('/', \App\Livewire\Product\Index::class)->name('product.index');
         Route::get('/create', \App\Livewire\Product\Create::class)->name('product.create');
@@ -44,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('vendor')->group(function(){
-        Route::get('/', \App\Livewire\Vendor\Index::class)->name('vendor.product');
+        Route::get('/', \App\Livewire\Vendor\Index::class)->name('vendor.index');
         Route::get('/create', \App\Livewire\Vendor\Create::class)->name('vendor.create');
         Route::get('/edit/{id}', \App\Livewire\Vendor\Edit::class)->name('vendor.edit');
     });

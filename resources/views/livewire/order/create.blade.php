@@ -8,6 +8,12 @@
             <div class="card border-0 shadow-sm rounded">
                 <div class="card-body">
                     <form wire:submit="store" enctype="multipart/form-data">
+
+                        <div class="form-group mb-4">
+                            <label for="nama_order">Nama Order</label>
+                            <input type="text" class="form-control" id="nama_order" wire:model="nama_order">
+                            @error('nama_order') <span>{{ $message }}</span> @enderror
+                        </div>
             
                         <div class="form-group mb-4">
                             <label for="product_id">Produk</label>

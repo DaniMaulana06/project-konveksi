@@ -23,14 +23,13 @@
 
                 <div class="mb-3">
                     <label class="form-label">Kategori Produk</label>
-                    <select wire:model="kategori_produk" class="form-select">
+                    <select wire:model="category_id" class="form-control">
                         <option value="">-- Pilih Kategori --</option>
-                        <option value="jersey">Jersey</option>
-                        <option value="kemeja">Kemeja</option>
-                        <option value="idcard">ID Card</option>
-                        <option value="topi">Topi</option>
-                    </select>
-                    @error('kategori_produk') <small class="text-danger">{{ $message }}</small> @enderror
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->nama_kategori }}</option>
+                        @endforeach
+                    </select>                    
+                    @error('category_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="mb-3">

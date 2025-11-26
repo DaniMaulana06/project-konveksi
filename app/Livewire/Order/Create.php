@@ -14,9 +14,13 @@ class Create extends Component
 {
     use WithFileUploads;
 
-    #[Rule('required|string|max:50',message: 'Nama tidak boleh lebih dari 5 karakter')]
+    #[Rule('required|string|max:50', message: 'Nama tidak boleh Lebih dari 50 karakter')]
+    public $nama_order;
+    #[Rule('required|string|max:50',message: 'Nama tidak boleh lebih dari 50 karakter')]
     public $nama_customer;
     #[Rule('required|string|max:12')]
+
+
     public $no_telp;
     #[Rule('string|max:100')]
     public $asal_instansi;
@@ -44,6 +48,7 @@ class Create extends Component
         // Save the order data to the database
         $order = Order::create([
             'product_id' => $product->id,
+            'nama_order' => $validatedData['nama_order'],
             'nama_customer' => $validatedData['nama_customer'],
             'no_telp' => $validatedData['no_telp'],
             'asal_instansi' => $validatedData['asal_instansi'],

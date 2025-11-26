@@ -15,6 +15,9 @@
         </div>
     @endif
     <div class="card">
+        <div class="card-header">
+            <h4>Form Input Bahan Produksi untuk Order: {{ $productionList->nama_order ?? '' }}</h4>
+        </div>
         <div class="card-body">
             <form wire:submit.prevent="save">
 
@@ -58,18 +61,22 @@
                                 X
                             </button>
                         </div>
-
                     </div>
-
                 @endforeach
-
                 <button type="button" class="btn btn-primary mb-3" wire:click="addInput">
                     + Tambah Bahan
                 </button>
-
-                <button class="btn btn-success w-100">Simpan Semua Bahan</button>
-
+                <button class="btn btn-success w-100 mb-5">Simpan Semua Bahan</button>
             </form>
+            
+            @if($hasMaterials)
+                <button wire:click="updateStatus('proses')" class="btn btn-success float-end ms-2">
+                    Mulai Produksi
+                </button>
+            @endif
+            <a href="{{ route('production.material.list') }}" class="btn btn-m btn-danger float-end" wire:navigate>Batal</a>
         </div>
+
     </div>
+
 </div>

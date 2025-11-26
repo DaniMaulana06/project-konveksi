@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Product;
 
+use App\Models\Category;
 use App\Models\Product;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -13,8 +14,8 @@ class Create extends Component
 
     #[Rule('required|string|max:100')]
     public $nama_produk;
-    #[Rule('required|string|in:jersey,kemeja,idcard,topi')]
-    public $kategori_produk;
+    #[Rule('required|exists:categories,id')]
+    public $category_id;
     #[Rule('required|string|max:50')]
     public $deskripsi_produk;
     #[Rule('required|file|max:250')]
@@ -27,7 +28,7 @@ class Create extends Component
 
         Product::create([
             'nama_produk' => $validatedData['nama_produk'],
-            'kategori_produk' => $validatedData['kategori_produk'],
+            'category_id' => $validatedData['category_id'],
             'deskripsi_produk' => $validatedData['deskripsi_produk'],
             'gambar' => $filePath,
         ]);
@@ -38,7 +39,8 @@ class Create extends Component
 
     public function render()
     {
-        $products = Product::all();
-        return view('livewire.product.create', compact('products'));
+        return view('livewire.product.create', [
+            'categories' => Category::all()
+        ]);
     }
 }
