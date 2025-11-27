@@ -32,65 +32,83 @@
                 </button>
             </div>
 
-            <ul class="sidebar-nav">
-                <!-- Admin Section -->
-                <li class="nav-section">
-                    <div class="nav-section-title">Admin</div>
+            <ul class="sidebar-nav"> 
+                @if (Auth::user()->role === 'admin')
+                    <!-- Admin Section -->
                     <div class="nav-item">
-                        <a href="/order" class="{{ request()->routeIs('order*') ? 'active' : '' }}" title="Order">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="nav-text">Order</span>
+                        <a href="/admin/dashboard" class="{{ request()->routeIs('dashboard.admin') ? 'active' : '' }}"
+                            title="Dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="nav-text">Dashboard</span>
                         </a>
                     </div>
-                    <div class="nav-item">
-                        <a href="/product" class="{{ request()->routeIs('product*') ? 'active' : '' }}" title="Produk">
-                            <i class="fas fa-box"></i>
-                            <span class="nav-text">Produk</span>
-                        </a>
-                    </div>
-                    <div class="nav-item">
-                        <a href="/vendor" class="{{ request()->routeIs('vendor*') ? 'active' : '' }}" title="Vendor">
-                            <i class="fas fa-store"></i>
-                            <span class="nav-text">Vendor</span>
-                        </a>
-                    </div>
-                    <div class="nav-item">
-                        <a href="/kategori" class="{{ request()->routeIs('category*') ? 'active' : '' }}" title="Kategori">
-                            <i class="fas fa-list-alt"></i>
-                            <span class="nav-text">Kategori</span>
-                        </a>
-                    </div>
-                </li>
+                    <li class="nav-section">
 
-                <!-- Production Section -->
-                <li class="nav-section">
-                    <div class="nav-section-title">Produksi</div>
+                        <div class="nav-section-title">Admin</div>
+                        <div class="nav-item">
+                            <a href="/order" class="{{ request()->routeIs('order*') ? 'active' : '' }}" title="Order">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="nav-text">Order</span>
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="/product" class="{{ request()->routeIs('product*') ? 'active' : '' }}" title="Produk">
+                                <i class="fas fa-box"></i>
+                                <span class="nav-text">Produk</span>
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="/vendor" class="{{ request()->routeIs('vendor*') ? 'active' : '' }}" title="Vendor">
+                                <i class="fas fa-store"></i>
+                                <span class="nav-text">Vendor</span>
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="/kategori" class="{{ request()->routeIs('category*') ? 'active' : '' }}" title="Kategori">
+                                <i class="fas fa-list-alt"></i>
+                                <span class="nav-text">Kategori</span>
+                            </a>
+                        </div>
+                    </li>
+                @elseif (Auth::user()->role === 'produksi')
+                    <!-- Production Section -->
                     <div class="nav-item">
-                        <a href="/bahan" class="{{ request()->routeIs('bahan*') ? 'active' : '' }}" title="Bahan">
-                            <i class="fas fa-cubes"></i>
-                            <span class="nav-text">Bahan</span>
+                        <a href="/produksi/dashboard" class="{{ request()->routeIs(patterns: 'dashboard.produksi') ? 'active' : '' }}"
+                            title="Dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="nav-text">Dashboard</span>
                         </a>
                     </div>
-                    <div class="nav-item">
-                        <a href="/produksi" class="{{ request()->routeIs('produksi*') ? 'active' : '' }}" title="Produksi">
-                            <i class="fas fa-industry"></i>
-                            <span class="nav-text">Produksi</span>
-                        </a>
-                    </div>
-                    <div class="nav-item">
-                        <a href="/vendor" class="{{ request()->routeIs('vendor*') ? 'active' : '' }}" title="Vendor">
-                            <i class="fas fa-store"></i>
-                            <span class="nav-text">Vendor</span>
-                        </a>
-                    </div>
-                </li>
+                    <li class="nav-section">
+                        <div class="nav-section-title">Produksi</div>
+                        <div class="nav-item">
+                            <a href="/bahan" class="{{ request()->routeIs('bahan*') ? 'active' : '' }}" title="Bahan">
+                                <i class="fas fa-cubes"></i>
+                                <span class="nav-text">Bahan</span>
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="/produksi" class="{{ request()->routeIs('production*') ? 'active' : '' }}"
+                                title="Produksi">
+                                <i class="fas fa-industry"></i>
+                                <span class="nav-text">Produksi</span>
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="/vendor/list" class="{{ request()->routeIs('vendor*') ? 'active' : '' }}" title="Vendor">
+                                <i class="fas fa-store"></i>
+                                <span class="nav-text">Vendor</span>
+                            </a>
+                        </div>
+                    </li>
+                @endif
             </ul>
         </aside>
 
         <!-- Main Wrapper -->
         <div class="main-wrapper" id="mainWrapper">
             <!-- Top Navbar -->
-            <nav class="top-navbar">
+            <nav class="top-navbar navbar-expand-lg fixed-top">
                 <div class="navbar-left">
                     <button class="btn-menu-toggle d-lg-none" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
@@ -121,7 +139,7 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const mainWrapper = document.getElementById('mainWrapper');
-            
+
             sidebar.classList.toggle('collapsed');
             mainWrapper.classList.toggle('expanded');
 
@@ -131,7 +149,7 @@
         }
 
         // Restore sidebar state dari localStorage
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
             if (isCollapsed) {
                 const sidebar = document.getElementById('sidebar');
@@ -142,5 +160,4 @@
         });
     </script>
 </body>
-
 </html>

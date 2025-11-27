@@ -22,6 +22,11 @@ class Login extends Component
         'password.min' => 'Password minimal 6 karakter.',
     ];
 
+    public function mount() {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+    }
     public function login() {
         $this->validate();
 
@@ -31,9 +36,15 @@ class Login extends Component
         ];
 
         if (Auth::attempt($credentials)) {
+            
             session()->regenerate();
             session()->flash('message', 'Login berhasil! Selamat datang '.Auth::user()->name.'.');
-            return redirect()->intended('dashboard');
+            
+            if (Auth::user()->role === 'admin') {
+                return redirect()->intended('/admin/dashboard');
+            } elseif (Auth::user()->role === 'produksi') {
+                return redirect()->intended('/produksi/dashboard');
+            }
         }
 
         $this->addError('email', 'Email atau password salah.');

@@ -6,6 +6,9 @@
     <div class="row">
         <div class="col md-12">
             <div class="card border-0 shadow-sm rounded">
+                <div class="card-header">
+                    <h4>Tambah Order</h4>
+                </div>
                 <div class="card-body">
                     <form wire:submit="store" enctype="multipart/form-data">
 
@@ -64,6 +67,12 @@
                         <div class="form-group mb-4">
                             <label for="file_panduan">File Panduan</label>
                             <input type="file" class="form-control" id="file_panduan" wire:model="file_panduan">
+                            <div class="mt-2 text-primary small"
+                                 wire:loading
+                                 wire:target="file_panduan">
+                                <span class="spinner-border spinner-border-sm"></span>
+                                Mengupload file...
+                            </div>
                             @error('file_panduan') <span>{{ $message }}</span> @enderror
                         </div>
 
@@ -76,7 +85,6 @@
                         @endif
                         <a href="/order" wire:navigate class="btn btn-md btn-danger">Batal</a>
                     </form>
-                    
                 </div>
             </div>
         </div>

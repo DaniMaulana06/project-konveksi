@@ -13,6 +13,7 @@ Edit Order
 
             @if (session()->has('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
+                <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
             @endif
 
             <form wire:submit.prevent="update">

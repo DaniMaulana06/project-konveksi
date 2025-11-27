@@ -17,18 +17,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', Login::class)->name('login');
-Route::get('/register', Register::class)->name('register');
+Route::middleware('guest')->get('/login', Login::class)->name('login');
+Route::middleware('guest')->get('/register', Register::class)->name('register');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', \App\Livewire\Dashboard::class)->name('dashboard');
+Route::post('/logout', function () {
+    Auth::logout();
 
-    Route::prefix('bahan')->group(function () {
-        Route::get('/', \App\Livewire\Bahan\Index::class)->name('bahan.index');
-        Route::get('/create', Create::class)->name('bahan.create');
-        Route::get('/edit/{id}', Edit::class)->name('bahan.edit');
-    });
+    session()->invalidate();
+    session()->regenerateToken();
 
+    return redirect('login');
+})->name('logout');
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', \App\Livewire\Dashboard\Admin::class)->name('dashboard.admin');
     Route::prefix('order')->group(function () {
         Route::get('/', Index::class)->name('order.index');
         Route::get('/create', \App\Livewire\Order\Create::class)->name('order.create');
@@ -48,11 +50,23 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/edit/{id}', \App\Livewire\Product\Edit::class)->name('product.edit');
     });
 
-    Route::prefix('vendor')->group(function(){
-        Route::get('/', \App\Livewire\Vendor\Index::class)->name('vendor.index');
+    Route::prefix('vendor')->group(function () {
+        Route::get('/vendor', \App\Livewire\Vendor\Index::class)->name('vendor.index');
         Route::get('/create', \App\Livewire\Vendor\Create::class)->name('vendor.create');
         Route::get('/edit/{id}', \App\Livewire\Vendor\Edit::class)->name('vendor.edit');
     });
+});
+
+Route::middleware(['auth', 'role:produksi'])->group(function () {
+    Route::get('/produksi/dashboard', \App\Livewire\Dashboard\Produksi::class)->name('dashboard.produksi');
+
+    Route::prefix('bahan')->group(function () {
+        Route::get('/', \App\Livewire\Bahan\Index::class)->name('bahan.index');
+        Route::get('/create', Create::class)->name('bahan.create');
+        Route::get('/edit/{id}', Edit::class)->name('bahan.edit');
+    });
+
+    Route::get('/vendor/list', \App\Livewire\Vendor\ListVendor::class)->name('vendor.list');
 
     Route::get('/produksi', ProductionList::class)->name('production.index');
 
@@ -67,14 +81,5 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/produksi/material-list', ProductionMaterialList::class)->name('production.material.list');
 
-    // Route::get('/produksi/orders/{order}/details', OrderDetailList::class)->name('details.index');
-    // Route::get('/produksi/orders/{order}/details/create', OrderDetailCreate::class)->name('details.create');
-
-    // Route::get('/bahan', \App\Livewire\Bahan\Index::class)->name('bahan.index');
-    // Route::get('/bahan/create', \App\Livewire\Bahan\Create::class)->name('bahan.create');
-
-    Route::post('/logout', function () {
-        Auth::logout();
-        return redirect('login');
-    })->name('logout');
-});
+    
+    });

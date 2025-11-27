@@ -1,79 +1,118 @@
-@section('title')
-    List Order
-@endsection
+@section('title', 'List Order')
 
-<div class="container md-5 mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            <!-- flash message -->
-            @if (session()->has('message'))
-                <div class="alert alert-success">
-                    {{ session('message') }}
-                </div>
-            @endif
-            <!-- end flash message -->
-            <a href="/order/create" wire:navigate class="btn btn-md btn-success rounded shadow-sm border-0 mb-3">TAMBAH
-                ORDER</a>
-            <div class="card-body">
-                <table class="table table-striped table-hover table-bordered">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Order ID</th>
-                            <th>Nama Order</th>
-                            <th>Nama Customer</th>
-                            <th>Tanggal Order</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($orders as $order)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $order->id }}</td>
-                                <td>{{ $order->nama_order }}</td>
-                                <td>{{ $order->nama_customer }}</td>
-                                <td>{{ $order->created_at->format('d M Y') }}
-                                    <br>
-                                    <small class="text-muted">
-                                        {{ $order->created_at->format('H:i') }} WIB
-                                    </small>
-                                </td>
-                                <td>
-                                    @if ($order->status_order == 'pending')
-                                        <span class="badge text-bg-secondary">Pending</span>
-                                    @elseif ($order->status_order == 'proses')
-                                        <span class="badge text-bg-warning">Proses</span>
-                                    @elseif ($order->status_order == 'selesai')
-                                        <span class="badge text-bg-success">Selesai</span>
-                                    @elseif ($order->status_order == 'dikirim')
-                                        <span class="badge text-bg-info">Dikirim</span>
-                                    @endif
-                                </td>
-                                <td class="text-center">
-                                    {{-- <a href="/order/edit/{{ $order->id }}" wire:navigate
-                                        class="btn btn-sm btn-primary">EDIT</a> --}}
+<div class="container mt-5">
+
+    {{-- ALERT --}}
+    @if (session()->has('message'))
+        <div class="alert alert-primary shadow-sm rounded-3 border-0">
+            {{ session('message') }}
+            <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @elseif (session()->has('error'))
+        <div class="alert alert-danger shadow-sm rounded-3 border-0">
+            {{ session('error') }}
+            <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    {{-- HEADER --}}
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">
+        <div>
+            <h3 class="fw-bold text-primary mb-0">Data Order</h3>
+            <small class="text-muted">Manajemen pesanan customer</small>
+        </div>
+
+        <a href="/order/create" wire:navigate class="btn btn-primary shadow-sm rounded-3 px-4 fw-semibold">
+            + Tambah Order
+        </a>
+    </div>
+
+    {{-- SEARCH --}}
+    <div class="card shadow-sm border-0 mb-4 rounded-4">
+        <div class="card-body">
+            <input type="text" class="form-control border-primary rounded-pill px-4"
+                placeholder="Cari nama order atau customer..." wire:model.live.debounce="search">
+        </div>
+    </div>
+
+
+    {{-- TABLE --}}
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table align-middle m-2">
+                <thead style="background: #0d6efd;" class="text-white">
+                    <tr>
+                        <th>No</th>
+                        <th>Order ID</th>
+                        <th>Nama Order</th>
+                        <th>Customer</th>
+                        <th>Tanggal</th>
+                        <th>Status</th>
+                        <th class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody class="bg-white">
+                    @forelse ($orders as $order)
+                        <tr class="border-bottom">
+                            <td>{{ $loop->iteration }}</td>
+                            <td class="fw-semibold text-primary">{{ $order->id }}</td>
+                            <td>{{ $order->nama_order }}</td>
+                            <td>{{ $order->nama_customer }}</td>
+
+                            <td>
+                                {{ $order->created_at->format('d M Y') }} <br>
+                                <small class="text-muted">{{ $order->created_at->format('H:i') }} WIB</small>
+                            </td>
+
+                            <td>
+                                @if ($order->status_order == 'pending')
+                                    <span class="badge bg-secondary px-3 py-2 rounded-pill">Pending</span>
+                                @elseif ($order->status_order == 'proses')
+                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Proses</span>
+                                @elseif ($order->status_order == 'selesai')
+                                    <span class="badge bg-success px-3 py-2 rounded-pill">Selesai</span>
+                                @elseif ($order->status_order == 'dikirim')
+                                    <span class="badge bg-info text-dark px-3 py-2 rounded-pill">Dikirim</span>
+                                @endif
+                            </td>
+
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
                                     <a href="/order/detail/{{ $order->id }}" wire:navigate
-                                        class="btn btn-sm btn-info text-white">DETAIL</a>
+                                        class="btn btn-outline-primary btn-sm rounded-3 px-3">
+                                        Detail
+                                    </a>
 
                                     <a href="{{ route('order.edit', $order->id) }}" wire:navigate
-                                        class="btn btn-sm btn-warning text-white">Edit</a>
+                                        class="btn btn-outline-warning btn-sm rounded-3 px-3">
+                                        Edit
+                                    </a>
 
-                                    <button wire:click="destroy({{ $order->id }})"
-                                        class="btn btn-sm btn-danger">DELETE</button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center">No orders found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
+                                    <button wire:click="destroy({{ $order->id }})" wire:confirm="Yakin ingin menghapus?"
+                                        class="btn btn-outline-danger btn-sm rounded-3 px-3">
+                                        Hapus
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-5">
+                                Data order belum tersedia
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
+
+        {{-- PAGINATION --}}
+        @if ($orders instanceof \Illuminate\Pagination\AbstractPaginator)
+            <div class="card-footer bg-white border-0">
+                {{ $orders->links() }}
+            </div>
+        @endif
     </div>
 
 </div>

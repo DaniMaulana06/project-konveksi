@@ -19,11 +19,11 @@ class ProductionMaterialForm extends Component
     {
         $production = ProductionListModel::where('order_id', $orderId)->first();
         $this->production_list_id = $production->id;
-    
+
         $this->materials = Bahan::all();
 
         $existing = ProductionMaterial::where('production_list_id', $this->production_list_id)->get();
-    
+
         if ($existing->isNotEmpty()) {
             $this->hasMaterials = true;
             foreach ($existing as $mat) {
@@ -44,8 +44,6 @@ class ProductionMaterialForm extends Component
             ];
         }
     }
-    
-
     public function updatedInputs($value, $key)
     {
 
@@ -69,7 +67,6 @@ class ProductionMaterialForm extends Component
             }
         }
     }
-
     public function addInput()
     {
         $this->inputs[] = [
@@ -79,13 +76,23 @@ class ProductionMaterialForm extends Component
             'keterangan' => '',
         ];
     }
-
     public function removeInput($i)
     {
-        unset($this->inputs[$i]);
-        $this->inputs = array_values($this->inputs);
-    }
+        if (isset($this->inputs[$i]) && !empty($this->inputs[$i]['material_id']) && !empty($this->inputs[$i]['jumlah'])) {
+            $material = Bahan::find($this->inputs[$i]['material_id']);
+            if ($material) {
+                // Kembalikan stok
+                $material->stok += $this->inputs[$i]['jumlah'];
+                $material->save();
+            }
+            ProductionMaterial::where('production_list_id', $this->production_list_id)
+                ->where('material_id', $this->inputs[$i]['material_id'])
+                ->delete();
+        }
 
+        unset($this->inputs[$i]);
+        $this->inputs = array_values($this->inputs); // Reindex array
+    }
     public function save()
     {
         foreach ($this->inputs as $inp) {
@@ -119,21 +126,19 @@ class ProductionMaterialForm extends Component
 
         session()->flash('message', 'Semua bahan berhasil disimpan.');
     }
-
     public function updateStatus($status)
     {
         $production = ProductionListModel::findOrFail($this->production_list_id);
 
         $order = $production->order; // pastikan relasi 'order' ada di model ProductionListModel
-    
+
         $order->update([
             'status_order' => $status
         ]);
-    
+
         session()->flash('message', 'Status berhasil diperbarui!');
         return redirect()->route('production.index');
     }
-
     public function render()
     {
         return view('livewire.production.production-material-form', [
