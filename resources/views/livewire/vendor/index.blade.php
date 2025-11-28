@@ -31,7 +31,7 @@
                                     <td>{{ $vendor->no_vendor }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('vendor.edit', $vendor->id) }}" class="btn btn-sm btn-primary me-2">Edit</a>
-                                        <a href="{{ route('vendor.delete', $vendor->id) }}" class="btn btn-sm btn-danger">Delete</a>
+                                        <button wire:click="destroy({{ $vendor->id }})" class="btn btn-sm btn-danger">Hapus</button>
                                     </td>
                                 </tr>
                             @empty
