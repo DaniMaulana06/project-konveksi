@@ -13,7 +13,7 @@
                     <small class="text-muted">Manajemen Produk</small>
                 </div>
         
-                <a href="/produk/create" wire:navigate class="btn btn-primary shadow-sm rounded-3 px-4 fw-semibold">
+                <a href="{{ route('product.create') }}" wire:navigate class="btn btn-primary shadow-sm rounded-3 px-4 fw-semibold">
                     + Tambah Order
                 </a>
             </div>

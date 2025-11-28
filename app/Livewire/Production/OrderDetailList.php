@@ -9,8 +9,6 @@ class OrderDetailList extends Component
 {
     public $orderId;
     protected $listeners = ['update-status-final' => 'updateStatus'];
-
-
     public function mount($orderId)
     {
         $this->orderId = $orderId;

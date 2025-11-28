@@ -66,7 +66,7 @@
                 <button type="button" class="btn btn-primary mb-3" wire:click="addInput">
                     + Tambah Bahan
                 </button>
-                <button class="btn btn-success w-100 mb-5" wire:click="confirmSave">Simpan Semua Bahan</button>
+                <button class="btn btn-success w-100 mb-5" type="submit">Simpan Semua Bahan</button>
             </form>
             
             @if($hasMaterials)

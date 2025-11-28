@@ -74,13 +74,13 @@
 
             <div class="mt-3">
                 @if($order->status_order === 'proses')
-                    <button wire:click="$dispatch('konfirmasi-status', { status: 'selesai' })" class="btn btn-success">
+                    <button wire:click="dispatch('konfirmasi-status', { status: 'selesai' })" class="btn btn-success">
                         Tandai Produksi Selesai
                     </button>
                 @endif
 
                 @if ($order->status_order === 'selesai')
-                    <button wire:click="$dispatch('konfirmasi-status', { status: 'dikirim' })" class="btn btn-primary">
+                    <button wire:click="dispatch('konfirmasi-status', { status: 'dikirim' })" class="btn btn-primary">
                         Kirim Produk
                     </button>
                 @endif
@@ -154,25 +154,26 @@
 </div>
 @push('scripts')
 <script>
-    document.addEventListener('livewire:init', () => {
+document.addEventListener('DOMContentLoaded', () => {
 
-        Livewire.on('konfirmasi-status', data => {
+    window.addEventListener('konfirmasi-status', event => {
+        let data = event.detail;
 
-            Swal.fire({
-                title: "Yakin ingin mengubah status?",
-                text: "Status akan diubah menjadi: " + data.status.toUpperCase(),
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Ya, Ubah!",
-                cancelButtonText: "Batal",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Livewire.dispatch('update-status-final', { status: data.status });
-                }
-            });
-
+        Swal.fire({
+            title: "Yakin ingin mengubah status?",
+            text: "Status akan diubah menjadi: " + data.status.toUpperCase(),
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, Ubah!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch('update-status-final', { status: data.status });
+            }
         });
-
     });
+
+});
 </script>
 @endpush
+

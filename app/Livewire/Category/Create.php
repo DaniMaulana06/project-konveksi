@@ -10,7 +10,7 @@ class Create extends Component
 {
     #[Rule('required|string|max:50')]
     public $nama_kategori;
-    #[Rule('nullable|string|max:5')]
+    #[Rule('nullable|string|max:100')]
     public $deskripsi;
 
     public function store(){
@@ -22,6 +22,7 @@ class Create extends Component
         ]);
 
         session()->flash('message', 'Kategori berhasil ditambahkan: ' . $category->nama_kategori);
+        redirect()->route('category.index');
     }
     public function render()
     {

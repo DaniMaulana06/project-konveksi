@@ -19,7 +19,7 @@
 
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <input type="number" class="form-control" id="deskripsi" wire:model="deskripsi">
+                            <input type="text" class="form-control" id="deskripsi" wire:model="deskripsi">
                             @error('deskripsi') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
 

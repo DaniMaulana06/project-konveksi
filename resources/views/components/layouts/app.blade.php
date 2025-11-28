@@ -32,7 +32,7 @@
                 </button>
             </div>
 
-            <ul class="sidebar-nav"> 
+            <ul class="sidebar-nav">
                 @if (Auth::user()->role === 'admin')
                     <!-- Admin Section -->
                     <div class="nav-item">
@@ -46,19 +46,22 @@
 
                         <div class="nav-section-title">Admin</div>
                         <div class="nav-item">
-                            <a href="/order" class="{{ request()->routeIs('order*') ? 'active' : '' }}" title="Order">
+                            <a href="{{ route('order.index') }}" class="{{ request()->routeIs('order*') ? 'active' : '' }}"
+                                title="Order">
                                 <i class="fas fa-shopping-cart"></i>
                                 <span class="nav-text">Order</span>
                             </a>
                         </div>
                         <div class="nav-item">
-                            <a href="/product" class="{{ request()->routeIs('product*') ? 'active' : '' }}" title="Produk">
+                            <a href="{{route('product.index')}}" class="{{ request()->routeIs('product*') ? 'active' : '' }}"
+                                title="Produk">
                                 <i class="fas fa-box"></i>
                                 <span class="nav-text">Produk</span>
                             </a>
                         </div>
                         <div class="nav-item">
-                            <a href="/vendor" class="{{ request()->routeIs('vendor*') ? 'active' : '' }}" title="Vendor">
+                            <a href="{{ route('vendor.index') }}" class="{{ request()->routeIs('vendor*') ? 'active' : '' }}"
+                                title="Vendor">
                                 <i class="fas fa-store"></i>
                                 <span class="nav-text">Vendor</span>
                             </a>
@@ -73,8 +76,8 @@
                 @elseif (Auth::user()->role === 'produksi')
                     <!-- Production Section -->
                     <div class="nav-item">
-                        <a href="/produksi/dashboard" class="{{ request()->routeIs(patterns: 'dashboard.produksi') ? 'active' : '' }}"
-                            title="Dashboard">
+                        <a href="/produksi/dashboard"
+                            class="{{ request()->routeIs(patterns: 'dashboard.produksi') ? 'active' : '' }}" title="Dashboard">
                             <i class="fas fa-tachometer-alt"></i>
                             <span class="nav-text">Dashboard</span>
                         </a>
@@ -88,8 +91,8 @@
                             </a>
                         </div>
                         <div class="nav-item">
-                            <a href="/produksi" class="{{ request()->routeIs('production*') ? 'active' : '' }}"
-                                title="Produksi">
+                            <a href="{{ route('production.index') }}" class="{{ request()->routeIs('production*') ? 'active' : '' }}"
+                                title="Produksi" wire:navigate>
                                 <i class="fas fa-industry"></i>
                                 <span class="nav-text">Produksi</span>
                             </a>
@@ -135,29 +138,31 @@
         </div>
     @endauth
 
-    <script>
-        function toggleSidebar() {
+    @livewireScripts
+    @stack('scripts')
+</body>
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const mainWrapper = document.getElementById('mainWrapper');
+
+        sidebar.classList.toggle('collapsed');
+        mainWrapper.classList.toggle('expanded');
+
+        // Simpan state ke localStorage
+        const isCollapsed = sidebar.classList.contains('collapsed');
+        localStorage.setItem('sidebarCollapsed', isCollapsed);
+    }
+
+    // Restore sidebar state dari localStorage
+    document.addEventListener('DOMContentLoaded', function () {
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (isCollapsed) {
             const sidebar = document.getElementById('sidebar');
             const mainWrapper = document.getElementById('mainWrapper');
-
-            sidebar.classList.toggle('collapsed');
-            mainWrapper.classList.toggle('expanded');
-
-            // Simpan state ke localStorage
-            const isCollapsed = sidebar.classList.contains('collapsed');
-            localStorage.setItem('sidebarCollapsed', isCollapsed);
+            sidebar.classList.add('collapsed');
+            mainWrapper.classList.add('expanded');
         }
-
-        // Restore sidebar state dari localStorage
-        document.addEventListener('DOMContentLoaded', function () {
-            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-            if (isCollapsed) {
-                const sidebar = document.getElementById('sidebar');
-                const mainWrapper = document.getElementById('mainWrapper');
-                sidebar.classList.add('collapsed');
-                mainWrapper.classList.add('expanded');
-            }
-        });
-    </script>
-</body>
+    });
+</script>
 </html>
