@@ -29,7 +29,7 @@
                         @foreach($categories as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->nama_kategori }}</option>
                         @endforeach
-                    </select>                    
+                    </select>
                     @error('category_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
@@ -52,8 +52,13 @@
 
                     @if ($gambar_baru)
                         <div class="mt-2">
-                            Preview:  
+                            Preview: 
+                            <br>
                             <img src="{{ $gambar_baru->temporaryUrl() }}" width="120" class="rounded border">
+                            <div class="mt-2 text-primary small" wire:loading wire:target="gambar_baru">
+                                <span class="spinner-border spinner-border-sm"></span>
+                                Mengunggah gambar...
+                            </div>
                         </div>
                     @endif
 

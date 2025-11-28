@@ -17,6 +17,11 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function destroy($id)
+    {
+        Product::destroy($id);
+        $this->dispatch('alert', type: 'success', message: 'Data berhasil dihapus');
+    }
     public function render()
     {
         $products = Product::query()

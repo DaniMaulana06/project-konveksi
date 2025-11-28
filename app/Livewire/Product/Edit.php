@@ -52,11 +52,12 @@ class Edit extends Component
         // Jika ada upload gambar baru
         if ($this->gambar_baru) {
 
-            // Hapus gambar lama jika ada
+            // Hapus gambar lama jika ada dan file benar-benar ada
             if ($product->gambar && Storage::disk('public')->exists($product->gambar)) {
                 Storage::disk('public')->delete($product->gambar);
             }
 
+            // Simpan gambar baru
             $gambarPath = $this->gambar_baru->store('gambar_produk', 'public');
 
         } else {

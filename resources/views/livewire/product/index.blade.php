@@ -5,15 +5,23 @@
 <div class="container md-5 mt-3">
     <div class="row">
         <div class="col md-12">
-
+            <!-- flash message -->
+            @if (session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                    <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            <!-- end flash message -->
             {{-- header --}}
             <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">
                 <div>
                     <h3 class="fw-bold text-primary mb-0">Data Produk</h3>
                     <small class="text-muted">Manajemen Produk</small>
                 </div>
-        
-                <a href="{{ route('product.create') }}" wire:navigate class="btn btn-primary shadow-sm rounded-3 px-4 fw-semibold">
+
+                <a href="{{ route('product.create') }}" wire:navigate
+                    class="btn btn-primary shadow-sm rounded-3 px-4 fw-semibold">
                     + Tambah Order
                 </a>
             </div>
@@ -28,14 +36,7 @@
 
             {{-- body --}}
             <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
-                <!-- flash message -->
-                @if (session()->has('message'))
-                    <div class="alert alert-success">
-                        {{ session('message') }}
-                        <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                <!-- end flash message -->
+
                 <div class="card-body">
                     <table class="table table-striped table-hover table-bordered">
                         <thead>
