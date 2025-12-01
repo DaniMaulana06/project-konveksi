@@ -48,14 +48,63 @@ class Order extends Model
         return $this->hasMany(OrderMaterial::class);
     }
 
+    // ========== BAGIAN INI YANG DIUPDATE ==========
     protected static function booted()
     {
+        // Yang sudah ada (jangan dihapus)
         static::creating(function ($order) {
             if (auth()->check()) {
                 $order->created_by = auth()->id();
             }
         });
+
+        // ===== TAMBAHKAN KODE BARU DIBAWAH INI =====
+        
+        // Saat order berhasil dibuat (setelah disimpan ke database)
+        static::created(function ($order) {
+            \App\Models\Aktivitas::catat(
+                jenis: 'order',
+                judul: 'Order Baru Dibuat',
+                deskripsi: "Order #{$order->id} - {$order->nama_order} dari {$order->nama_customer}",
+                icon: 'fa-shopping-cart',
+                warna: 'success',
+                reference: $order
+            );
+        });
+
+        // Saat order diupdate
+        static::updated(function ($order) {
+            // Cek apakah status_order yang berubah
+            if ($order->isDirty('status_order')) {
+                $statusText = [
+                    'pending' => 'Menunggu Konfirmasi',
+                    'proses' => 'Sedang Diproses',
+                    'selesai' => 'Selesai',
+                    'dikirim' => 'Sedang Dikirim'
+                ];
+
+                $warna = [
+                    'pending' => 'warning',
+                    'proses' => 'info',
+                    'selesai' => 'success',
+                    'dikirim' => 'primary'
+                ];
+
+                $status = $order->status_order;
+
+                \App\Models\Aktivitas::catat(
+                    jenis: 'order',
+                    judul: 'Status Order Diubah',
+                    deskripsi: "Order #{$order->id} - {$statusText[$status]}",
+                    icon: 'fa-sync-alt',
+                    warna: $warna[$status] ?? 'info',
+                    reference: $order
+                );
+            }
+        });
+        // ===== AKHIR KODE BARU =====
     }
+    // ========== AKHIR BAGIAN UPDATE ==========
 
     public function productionMaterials()
     {
@@ -63,9 +112,7 @@ class Order extends Model
     }
 
     public function productionList()
-{
-    return $this->hasOne(\App\Models\ProductionListModel::class, 'order_id');
-}
-
-
+    {
+        return $this->hasOne(\App\Models\ProductionListModel::class, 'order_id');
+    }
 }
