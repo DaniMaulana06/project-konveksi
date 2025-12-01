@@ -7,12 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
     @livewireStyles
-    @livewireScripts
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/colors.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
@@ -53,21 +52,22 @@
                             </a>
                         </div>
                         <div class="nav-item">
-                            <a href="{{route('product.index')}}" class="{{ request()->routeIs('product*') ? 'active' : '' }}"
-                                title="Produk">
+                            <a href="{{ route('product.index') }}"
+                                class="{{ request()->routeIs('product*') ? 'active' : '' }}" title="Produk">
                                 <i class="fas fa-box"></i>
                                 <span class="nav-text">Produk</span>
                             </a>
                         </div>
                         <div class="nav-item">
-                            <a href="{{ route('vendor.index') }}" class="{{ request()->routeIs('vendor*') ? 'active' : '' }}"
-                                title="Vendor">
+                            <a href="{{ route('vendor.index') }}"
+                                class="{{ request()->routeIs('vendor*') ? 'active' : '' }}" title="Vendor">
                                 <i class="fas fa-store"></i>
                                 <span class="nav-text">Vendor</span>
                             </a>
                         </div>
                         <div class="nav-item">
-                            <a href="/kategori" class="{{ request()->routeIs('category*') ? 'active' : '' }}" title="Kategori">
+                            <a href="/kategori" class="{{ request()->routeIs('category*') ? 'active' : '' }}"
+                                title="Kategori">
                                 <i class="fas fa-list-alt"></i>
                                 <span class="nav-text">Kategori</span>
                             </a>
@@ -77,7 +77,8 @@
                     <!-- Production Section -->
                     <div class="nav-item">
                         <a href="/produksi/dashboard"
-                            class="{{ request()->routeIs(patterns: 'dashboard.produksi') ? 'active' : '' }}" title="Dashboard">
+                            class="{{ request()->routeIs(patterns: 'dashboard.produksi') ? 'active' : '' }}"
+                            title="Dashboard">
                             <i class="fas fa-tachometer-alt"></i>
                             <span class="nav-text">Dashboard</span>
                         </a>
@@ -91,14 +92,16 @@
                             </a>
                         </div>
                         <div class="nav-item">
-                            <a href="{{ route('production.index') }}" class="{{ request()->routeIs('production*') ? 'active' : '' }}"
-                                title="Produksi" wire:navigate>
+                            <a href="{{ route('production.index') }}"
+                                class="{{ request()->routeIs('production*') ? 'active' : '' }}" title="Produksi"
+                                wire:navigate>
                                 <i class="fas fa-industry"></i>
                                 <span class="nav-text">Produksi</span>
                             </a>
                         </div>
                         <div class="nav-item">
-                            <a href="/vendor/list" class="{{ request()->routeIs('vendor*') ? 'active' : '' }}" title="Vendor">
+                            <a href="/vendor/list" class="{{ request()->routeIs('vendor*') ? 'active' : '' }}"
+                                title="Vendor">
                                 <i class="fas fa-store"></i>
                                 <span class="nav-text">Vendor</span>
                             </a>
@@ -155,7 +158,7 @@
     }
 
     // Restore sidebar state dari localStorage
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
         if (isCollapsed) {
             const sidebar = document.getElementById('sidebar');
@@ -165,4 +168,5 @@
         }
     });
 </script>
+
 </html>
