@@ -162,80 +162,69 @@
             </div>
         </div>
 
-        {{-- Top Produk --}}
+        {{-- Aktivitas Terbaru  --}}
         <div class="row g-3">
             <div class="col-lg-12">
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-white border-0 py-3">
-                        <h5 class="fw-bold mb-0">
-                            <i class="fas fa-fire text-danger me-2"></i>Top Barang Paling Sering Diproduksi
-                        </h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold mb-0">
+                                <i class="fas fa-bell text-danger me-2"></i>Aktivitas Terbaru
+                            </h5>
+                            <button wire:click="refreshActivities" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-sync-alt me-1"></i> Refresh
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="bg-light">
-                                    <tr>
-                                        <th class="border-0 ps-4">Rank</th>
-                                        <th class="border-0">Nama Produk</th>
-                                        <th class="border-0">Kategori</th>
-                                        <th class="border-0 text-center">Jumlah Order</th>
-                                        <th class="border-0 text-center">Total Produksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse(($topProducts ?? []) as $index => $product)
-                                    <tr>
-                                        <td class="ps-4">
-                                            @if($index == 0)
-                                                <span class="badge bg-warning text-dark fs-6 px-3 py-2">
-                                                    <i class="fas fa-crown me-1"></i>#{{ $index + 1 }}
-                                                </span>
-                                            @elseif($index == 1)
-                                                <span class="badge bg-secondary fs-6 px-3 py-2">
-                                                    <i class="fas fa-medal me-1"></i>#{{ $index + 1 }}
-                                                </span>
-                                            @elseif($index == 2)
-                                                <span class="badge bg-danger fs-6 px-3 py-2">
-                                                    <i class="fas fa-award me-1"></i>#{{ $index + 1 }}
-                                                </span>
-                                            @else
-                                                <span class="badge bg-light text-dark fs-6 px-3 py-2">#{{ $index + 1 }}</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="bg-primary bg-opacity-10 rounded p-2 me-3">
-                                                    <i class="fas fa-box text-primary"></i>
+                        @if(count($recentActivities ?? []) > 0)
+                            <div class="activity-list">
+                                @foreach($recentActivities as $activity)
+                                    <div class="activity-item border-bottom p-4 hover-bg">
+                                        <div class="d-flex align-items-start">
+                                            {{-- Icon --}}
+                                            <div class="activity-icon-wrapper me-3">
+                                                <div class="activity-icon rounded-circle bg-{{ $activity['warna'] }} bg-opacity-10 p-3 d-flex align-items-center justify-content-center">
+                                                    <i class="fas {{ $activity['icon'] }} text-{{ $activity['warna'] }} fs-5"></i>
                                                 </div>
-                                                <h6 class="mb-0">{{ $product['nama_produk'] }}</h6>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-info-subtle text-info">
-                                                {{ $product['kategori'] ?? 'Uncategorized' }}
-                                            </span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="badge bg-primary-subtle text-primary fs-6 px-3 py-2">
-                                                {{ $product['total_orders'] }}
-                                            </span>
-                                        </td>
-                                        <td class="text-center">
-                                            <strong class="text-success">{{ $product['total_quantity'] }} pcs</strong>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center py-5">
-                                            <i class="fas fa-inbox text-muted fs-1 mb-3 d-block"></i>
-                                            <p class="text-muted mb-0">Belum ada data produksi</p>
-                                        </td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
+                                            
+                                            {{-- Content --}}
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <h6 class="mb-0 fw-semibold">{{ $activity['judul'] }}</h6>
+                                                    <span class="badge bg-{{ $activity['warna'] }} rounded-pill px-3">
+                                                        {{ ucfirst($activity['jenis']) }}
+                                                    </span>
+                                                </div>
+                                                
+                                                @if($activity['deskripsi'])
+                                                    <p class="mb-2 text-muted small">{{ $activity['deskripsi'] }}</p>
+                                                @endif
+                                                
+                                                <div class="d-flex align-items-center text-muted small">
+                                                    <i class="far fa-clock me-2"></i>
+                                                    <span class="me-3">{{ $activity['time_diff'] }}</span>
+                                                    
+                                                    @if($activity['user'] !== 'System')
+                                                        <i class="far fa-user me-2"></i>
+                                                        <span>{{ $activity['user'] }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="text-center py-5">
+                                <div class="empty-state">
+                                    <i class="fas fa-inbox text-muted opacity-25 mb-3" style="font-size: 4rem;"></i>
+                                    <h6 class="text-muted mb-1">Belum Ada Aktivitas</h6>
+                                    <p class="text-muted small mb-0">Aktivitas akan muncul di sini saat ada perubahan</p>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -290,19 +279,57 @@
         .bg-warning-subtle { background-color: rgba(255, 193, 7, 0.1) !important; }
         .bg-info-subtle { background-color: rgba(13, 202, 240, 0.1) !important; }
 
-        .table thead th {
-            font-weight: 600;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        /* Activity Styles */
+        .activity-list {
+            max-height: 600px;
+            overflow-y: auto;
         }
 
-        .table tbody tr {
-            transition: background-color 0.2s ease;
+        .activity-list::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .table tbody tr:hover {
-            background-color: rgba(0, 0, 0, 0.02);
+        .activity-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .activity-list::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .activity-list::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        .activity-item {
+            transition: all 0.2s ease;
+        }
+
+        .activity-item.hover-bg:hover {
+            background-color: #f8f9fa;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none !important;
+        }
+
+        .activity-icon-wrapper {
+            flex-shrink: 0;
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            transition: transform 0.2s ease;
+        }
+
+        .activity-item:hover .activity-icon {
+            transform: scale(1.1);
+        }
+
+        .empty-state {
+            padding: 2rem 1rem;
         }
 
         @media (max-width: 768px) {
@@ -312,6 +339,26 @@
             .header-icon-box { width: 50px; height: 50px; }
             .header-icon-box i { font-size: 1.5rem !important; }
             .date-box { font-size: 0.85rem; }
+            .activity-icon { width: 40px; height: 40px; }
         }
     </style>
 </div>
+
+{{-- Scripts untuk auto-refresh --}}
+@push('scripts')
+<script>
+    // Auto refresh aktivitas setiap 30 detik
+    setInterval(function() {
+        if (typeof @this !== 'undefined') {
+            @this.call('refreshActivities');
+        }
+    }, 30000);
+    
+    // Listen untuk event refresh
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('activities-refreshed', () => {
+            console.log('✅ Activities refreshed successfully!');
+        });
+    });
+</script>
+@endpush

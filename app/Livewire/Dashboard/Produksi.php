@@ -5,8 +5,7 @@ namespace App\Livewire\Dashboard;
 use Livewire\Component;
 use App\Models\Order;
 use App\Models\Bahan;
-use App\Models\Product;
-use Illuminate\Support\Facades\DB;
+use App\Models\Aktivitas;
 use Illuminate\Support\Facades\Log;
 
 class Produksi extends Component
@@ -21,13 +20,13 @@ class Produksi extends Component
     public $totalMaterials;
     public $lowStock;
     
-    // Top Produk yang Sering Diproduksi
-    public $topProducts;
+    // Notifikasi Aktivitas Terbaru
+    public $recentActivities;
     
     public function mount()
     {
         // Inisialisasi default values
-        $this->topProducts = [];
+        $this->recentActivities = [];
         
         // Data Order
         $this->totalOrder   = Order::count();
@@ -40,51 +39,50 @@ class Produksi extends Component
         $this->totalMaterials = Bahan::count();
         $this->lowStock = Bahan::where('stok', '<', 20)->count();
         
-        // Load Top Products
-        $this->loadTopProducts();
+        // Load Recent Activities
+        $this->loadRecentActivities();
     }
     
-    public function loadTopProducts()
+    public function loadRecentActivities()
     {
         try {
-            // Cek apakah ada data order
-            if (Order::count() == 0) {
-                $this->topProducts = [];
-                return;
-            }
-
-            // Ambil top 5 produk berdasarkan jumlah order dan total quantity
-            $products = Order::select(
-                    'product.id',
-                    'product.nama_produk',
-                    'categories.nama_kategori as kategori',
-                    DB::raw('COUNT(DISTINCT order.id) as total_orders'),
-                    DB::raw('SUM(order.jumlah_order) as total_quantity')
-                )
-                ->join('product', 'order.product_id', '=', 'product.id')
-                ->leftJoin('categories', 'product.category_id', '=', 'categories.id')
-                ->whereNotNull('order.product_id')
-                ->groupBy('product.id', 'product.nama_produk', 'categories.nama_kategori')
-                ->orderByDesc('total_quantity')
-                ->orderByDesc('total_orders')
-                ->limit(5)
-                ->get();
-
-            $this->topProducts = $products->map(function($item) {
-                return [
-                    'id' => $item->id,
-                    'nama_produk' => $item->nama_produk,
-                    'kategori' => $item->kategori ?? 'Uncategorized',
-                    'total_orders' => $item->total_orders ?? 0,
-                    'total_quantity' => $item->total_quantity ?? 0
-                ];
-            })->toArray();
+            // Ambil 10 aktivitas terbaru dengan relasi user
+            $this->recentActivities = Aktivitas::with('user')
+                ->orderBy('created_at', 'desc')
+                ->limit(10)
+                ->get()
+                ->map(function($activity) {
+                    return [
+                        'id' => $activity->id,
+                        'jenis' => $activity->jenis,
+                        'judul' => $activity->judul,
+                        'deskripsi' => $activity->deskripsi,
+                        'icon' => $activity->icon,
+                        'warna' => $activity->warna,
+                        'time' => $activity->created_at,
+                        'user' => $activity->user ? $activity->user->name : 'System',
+                        'time_diff' => $activity->created_at->diffForHumans()
+                    ];
+                })
+                ->toArray();
 
         } catch (\Exception $e) {
-            // Jika terjadi error, set ke array kosong
-            $this->topProducts = [];
-            Log::error('Error loading top products: ' . $e->getMessage());
+            $this->recentActivities = [];
+            Log::error('Error loading recent activities: ' . $e->getMessage());
         }
+    }
+    
+    public function refreshActivities()
+    {
+        $this->loadRecentActivities();
+        $this->dispatch('activities-refreshed');
+    }
+    
+    public function markAsRead($activityId)
+    {
+        // Opsional: jika ingin menambah fitur mark as read
+        // bisa tambahkan kolom 'is_read' di tabel aktivitas
+        $this->dispatch('activity-marked', ['id' => $activityId]);
     }
 
     public function render()
