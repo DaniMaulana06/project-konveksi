@@ -3,10 +3,12 @@
 namespace App\Livewire\Production;
 
 use App\Models\Bahan;
-use App\Models\Order;
 use App\Models\ProductionListModel;
 use Livewire\Component;
-use App\Models\ProductionMaterial;
+use App\Services\Production\MaterialManagementService;
+use App\Services\Production\StockManagementService;
+use App\Actions\Production\UpdateProductionStatusAction;
+
 class ProductionMaterialForm extends Component
 {
     public $production_list_id;
@@ -15,6 +17,24 @@ class ProductionMaterialForm extends Component
     public $existingMaterials = false;
     public $hasMaterials = false;
 
+    // Helper method to get MaterialManagementService
+    protected function getMaterialService()
+    {
+        return app(MaterialManagementService::class);
+    }
+
+    // Helper method to get StockManagementService
+    protected function getStockService()
+    {
+        return app(StockManagementService::class);
+    }
+
+    // Helper method to get UpdateProductionStatusAction
+    protected function getUpdateStatusAction()
+    {
+        return app(UpdateProductionStatusAction::class);
+    }
+
     public function mount($orderId)
     {
         $production = ProductionListModel::where('order_id', $orderId)->first();
@@ -22,31 +42,14 @@ class ProductionMaterialForm extends Component
 
         $this->materials = Bahan::all();
 
-        $existing = ProductionMaterial::where('production_list_id', $this->production_list_id)->get();
-
-        if ($existing->isNotEmpty()) {
-            $this->hasMaterials = true;
-            foreach ($existing as $mat) {
-                $bahan = Bahan::find($mat->material_id);
-                $this->inputs[] = [
-                    'material_id' => $mat->material_id,
-                    'stok' => $bahan ? $bahan->stok : 0,
-                    'jumlah' => $mat->jumlah,
-                    'keterangan' => $mat->keterangan,
-                ];
-            }
-        } else {
-            $this->inputs[] = [
-                'material_id' => '',
-                'stok' => '',
-                'jumlah' => '',
-                'keterangan' => '',
-            ];
-        }
+        // Use service to initialize materials
+        $initialized = $this->getMaterialService()->initializeMaterials($this->production_list_id);
+        $this->inputs = $initialized['inputs'];
+        $this->hasMaterials = $initialized['hasMaterials'];
     }
+
     public function updatedInputs($value, $key)
     {
-
         $parts = explode('.', $key);
 
         if (count($parts) !== 2) {
@@ -57,16 +60,11 @@ class ProductionMaterialForm extends Component
         $field = $parts[1];
 
         if ($field === "material_id") {
-
-            $material = Bahan::find($value);
-
-            if ($material) {
-                $this->inputs[$index]['stok'] = $material->stok;
-            } else {
-                $this->inputs[$index]['stok'] = '';
-            }
+            // Use service to get stock
+            $this->inputs[$index]['stok'] = $this->getStockService()->getMaterialStock($value);
         }
     }
+
     public function addInput()
     {
         $this->inputs[] = [
@@ -76,69 +74,45 @@ class ProductionMaterialForm extends Component
             'keterangan' => '',
         ];
     }
+
     public function removeInput($i)
     {
-        if (isset($this->inputs[$i]) && !empty($this->inputs[$i]['material_id']) && !empty($this->inputs[$i]['jumlah'])) {
-            $material = Bahan::find($this->inputs[$i]['material_id']);
-            if ($material) {
-                // Kembalikan stok
-                $material->stok += $this->inputs[$i]['jumlah'];
-                $material->save();
-            }
-            ProductionMaterial::where('production_list_id', $this->production_list_id)
-                ->where('material_id', $this->inputs[$i]['material_id'])
-                ->delete();
+        if (isset($this->inputs[$i])) {
+            // Use service to remove material
+            $this->getMaterialService()->removeMaterial(
+                $this->production_list_id,
+                $this->inputs[$i]['material_id'] ?? null,
+                $this->inputs[$i]['jumlah'] ?? null
+            );
         }
 
         unset($this->inputs[$i]);
         $this->inputs = array_values($this->inputs); // Reindex array
     }
+
     public function save()
     {
-        foreach ($this->inputs as $inp) {
+        // Use service to save materials
+        $result = $this->getMaterialService()->saveMaterials($this->production_list_id, $this->inputs);
 
-            if (!$inp['material_id'] || !$inp['jumlah']) {
-                continue;
-            }
-
-            $material = Bahan::find($inp['material_id']);
-
-            if ($inp['jumlah'] > $material->stok) {
-                session()->flash('error', "Jumlah bahan '{$material->nama_bahan}' melebihi stok tersedia ({$material->stok}).");
-                return;
-            }
-
-            ProductionMaterial::create([
-                'production_list_id' => $this->production_list_id,
-                'material_id' => $inp['material_id'],
-                'jumlah' => $inp['jumlah'],
-                'keterangan' => $inp['keterangan'],
-            ]);
-
-            // Update stok
-            $material = Bahan::find($inp['material_id']);
-            $material->stok -= $inp['jumlah'];
-            $material->save();
+        if (!$result['success']) {
+            session()->flash('error', $result['message']);
+            return;
         }
 
         $this->hasMaterials = true;
-
-
-        session()->flash('message', 'Semua bahan berhasil disimpan.');
+        session()->flash('message', $result['message']);
     }
+
     public function updateStatus($status)
     {
-        $production = ProductionListModel::findOrFail($this->production_list_id);
-
-        $order = $production->order; // pastikan relasi 'order' ada di model ProductionListModel
-
-        $order->update([
-            'status_order' => $status
-        ]);
+        // Use action to update status
+        $this->getUpdateStatusAction()->execute($this->production_list_id, $status);
 
         session()->flash('message', 'Status berhasil diperbarui!');
         return redirect()->route('production.index');
     }
+
     public function render()
     {
         return view('livewire.production.production-material-form', [
