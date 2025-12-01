@@ -3,12 +3,15 @@
 <div class="container mt-5">
 
     {{-- HEADER --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold text-primary">📦 Daftar Material Produksi</h3>
-        <a href="/produksi" wire:navigate class="btn btn-warning rounded-pill px-4">
-            Kembali
-        </a>
+    <div class="card card-body mb-4 shadow-sm border-0 rounded-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="fw-bold text-primary">📦 Daftar Material Produksi</h3>
+            <a href="/produksi" wire:navigate class="btn btn-warning rounded-pill px-4">
+                Kembali
+            </a>
+        </div>
     </div>
+    
 
     {{-- SEARCH --}}
     <div class="card shadow-sm border-0 rounded-4 mb-4">

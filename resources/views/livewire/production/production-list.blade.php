@@ -78,9 +78,9 @@
         </div>
 
         {{-- Link ke List Bahan --}}
-        <div class="card-footer bg-white border-0">
+        <div class="card-footer bg-white border-0 mt-3">
             <a href="/produksi/material-list" wire:navigate 
-               class="btn btn-primary btn-sm rounded-pill px-4">
+               class="btn btn-primary btn-m rounded-pill" style="font-weight: bold">
                List Bahan Produksi
             </a>
         </div>
