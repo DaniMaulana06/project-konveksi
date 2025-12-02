@@ -31,7 +31,7 @@ class Index extends Component
                 $query->where('nama_bahan', 'like', '%' . $this->search . '%')
             )
             ->latest()
-            ->paginate(10);
+            ->paginate(5);
 
         $this->resetPage();
         return view('livewire.bahan.index', compact('bahan'));

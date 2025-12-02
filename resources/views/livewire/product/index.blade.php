@@ -3,7 +3,7 @@
 @endsection
 
 <div class="container md-5 mt-3">
-    <div class="row">
+    <div class="row mb-3">
         <div class="col md-12">
             <!-- flash message -->
             @if (session()->has('message'))
@@ -38,7 +38,7 @@
             <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
 
                 <div class="card-body">
-                    <table class="table table-striped table-hover table-bordered">
+                    <table class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -52,7 +52,7 @@
                         <tbody>
                             @forelse($products as $product)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ ($products->currentPage() - 1) * $products->perPage() + $loop->iteration }}</td>
                                     <td>{{ $product->nama_produk }}</td>
                                     <td>{{ $product->category->nama_kategori }}</td>
                                     <td>{{ $product->deskripsi_produk}}</td>
@@ -78,7 +78,7 @@
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
+    {{ $products->links('vendor.pagination.bootstrap-5') }}
 </div>

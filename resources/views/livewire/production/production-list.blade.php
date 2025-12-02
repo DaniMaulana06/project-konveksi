@@ -20,7 +20,7 @@
     </div>
 
     {{-- TABLE --}}
-    <div class="card shadow-lg rounded-4 border-0 overflow-hidden p-3">
+    <div class="card shadow-lg rounded-4 border-0 overflow-hidden p-3 mb-3">
         <div class="table-responsive">
             <table class="table align-middle mb-0">
                 <thead class="text-white" style="background: #0d6efd;">
@@ -37,7 +37,7 @@
                 <tbody class="bg-white">
                     @forelse($orders as $order)
                         <tr class="border-bottom">
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ ($orders->currentPage() - 1) * $orders->perPage() + $loop->iteration }}</td>
                             <td>{{ $order->nama_order }}</td>
                             <td>{{ $order->product->nama_produk ?? '-' }}</td>
                             <td>{{ $order->nama_customer }}</td>
@@ -85,5 +85,5 @@
             </a>
         </div>
     </div>
-
+{{ $orders->links('vendor.pagination.bootstrap-5') }}
 </div>

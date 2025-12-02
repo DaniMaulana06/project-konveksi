@@ -3,9 +3,17 @@
 namespace App\Livewire\Category;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    public $search = '';
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
     public function destroy($id)
     {
         $category = \App\Models\Category::findOrFail($id);
@@ -17,8 +25,12 @@ class Index extends Component
 
     public function render()
     {
+        $categories = \App\Models\Category::query()
+        ->when($this->search, fn($query) =>
+        $query->where('nama_kategori', 'like', '%' . $this->search . '%'))
+        ->latest()->paginate(5);
         return view('livewire.category.index',[
-            'categories' => \App\Models\Category::all()
+            'categories' => $categories
         ]);
     }
 }

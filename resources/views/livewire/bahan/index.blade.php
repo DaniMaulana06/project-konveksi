@@ -35,7 +35,7 @@
 
     {{-- TABLE --}}
     <div class="card shadow-lg rounded-4 border-0 overflow-hidden p-3">
-        <div class="table-responsive">
+        <div class="table-responsive mb-3">
             <table class="table align-middle mb-0">
                 <thead class="text-white" style="background: #0d6efd;">
                     <tr>
@@ -49,7 +49,7 @@
                 <tbody>
                     @foreach($bahan as $b)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ ($bahan->currentPage() - 1) * $bahan->perPage() + $loop->iteration }}</td>
                             <td>{{ $b->nama_bahan }}</td>
                             <td>{{ $b->satuan }}</td>
                             <td>{{ $b->stok }}</td>
@@ -73,6 +73,7 @@
                 </tbody>
             </table>
         </div>
+        {{ $bahan->links('vendor.pagination.bootstrap-5')}}
     </div>
 
 </div>
