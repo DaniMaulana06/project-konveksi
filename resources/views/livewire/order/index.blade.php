@@ -37,7 +37,7 @@
 
 
     {{-- TABLE --}}
-    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden mb-3">
         <div class="table-responsive">
             <table class="table align-middle m-2">
                 <thead style="background: #0d6efd;" class="text-white">
@@ -55,7 +55,7 @@
                 <tbody class="bg-white">
                     @forelse ($orders as $order)
                         <tr class="border-bottom">
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ ($orders->currentPage() - 1) * $orders->perPage() + $loop->iteration }}</td>
                             <td class="fw-semibold text-primary">{{ $order->id }}</td>
                             <td>{{ $order->nama_order }}</td>
                             <td>{{ $order->nama_customer }}</td>
@@ -89,7 +89,8 @@
                                         Edit
                                     </a>
 
-                                    <button wire:click="destroy({{ $order->id }})" wire:confirm="Yakin ingin menghapus?"
+                                    <button wire:click="destroy({{ $order->id }})"
+                                        wire:confirm="Yakin ingin menghapus?"
                                         class="btn btn-outline-danger btn-sm rounded-3 px-3">
                                         Hapus
                                     </button>
@@ -106,13 +107,7 @@
                 </tbody>
             </table>
         </div>
-
-        {{-- PAGINATION --}}
-        @if ($orders instanceof \Illuminate\Pagination\AbstractPaginator)
-            <div class="card-footer bg-white border-0">
-                {{ $orders->links() }}
-            </div>
-        @endif
     </div>
+    {{ $orders->links('vendor.pagination.bootstrap-5') }}
 
 </div>

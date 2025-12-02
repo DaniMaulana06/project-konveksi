@@ -5,8 +5,8 @@
     {{-- ALERT --}}
     @if (session()->has('message'))
         <div class="alert alert-primary shadow-sm rounded-3 border-0">
-             {{ session('message') }}
-             <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+            {{ session('message') }}
+            <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
@@ -22,19 +22,17 @@
     </div>
 
     {{-- SEARCH (optional, bisa ditambahkan nanti) --}}
-    {{-- 
+
     <div class="card shadow-sm border-0 mb-4 rounded-4">
         <div class="card-body">
-            <input type="text" 
-                   class="form-control border-primary rounded-pill px-4"
-                   placeholder="Cari kategori..." 
-                   wire:model.live.debounce.300ms="search">
+            <input type="text" class="form-control border-primary rounded-pill px-4" placeholder="Cari kategori..."
+                wire:model.live.debounce.300ms="search">
         </div>
     </div>
-    --}}
+
 
     {{-- TABLE --}}
-    <div class="card shadow-lg border-0 rounded-4 overflow-hidden p-3">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden p-3 mb-3">
         <div class="table-responsive">
             <table class="table align-middle mb-0">
                 <thead class="text-white" style="background: #0d6efd;">
@@ -48,17 +46,17 @@
                 <tbody class="bg-white">
                     @forelse($categories as $category)
                         <tr class="border-bottom">
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }}</td>
                             <td class="fw-semibold text-primary">{{ $category->nama_kategori }}</td>
                             <td>{{ $category->deskripsi }}</td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="{{ route('category.edit', $category->id) }}"
-                                       class="btn btn-outline-warning btn-sm rounded-3 px-3 text-yellow">
+                                        class="btn btn-outline-warning btn-sm rounded-3 px-3 text-yellow">
                                         Edit
                                     </a>
                                     <button class="btn btn-outline-danger btn-sm rounded-3 px-3"
-                                            wire:click="destroy({{ $category->id }})">
+                                        wire:click="destroy({{ $category->id }})">
                                         Hapus
                                     </button>
                                 </div>
@@ -74,13 +72,6 @@
                 </tbody>
             </table>
         </div>
-
-        {{-- Pagination --}}
-        @if ($categories instanceof \Illuminate\Pagination\AbstractPaginator)
-            <div class="card-footer bg-white border-0">
-                {{ $categories->links() }}
-            </div>
-        @endif
     </div>
-
+    {{ $categories->links('vendor.pagination.bootstrap-5') }}
 </div>

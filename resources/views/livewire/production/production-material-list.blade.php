@@ -84,6 +84,7 @@
             <div class="text-center text-muted py-4">
                 📭 Tidak ada data material produksi.
             </div>
+            {{ $pm_list->links('vendor.pagination.bootstrap-5') }}
         @endforelse
     </div>
 

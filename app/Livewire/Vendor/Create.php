@@ -14,7 +14,7 @@ class Create extends Component
     public $barang_vendor;
     #[Rule('required|string|max:500')]
     public $alamat_vendor;
-    #[Rule('required|string|max:20')]
+    #[Rule('required|numeric|min:10')]
     public $no_vendor;
 
     public function store()

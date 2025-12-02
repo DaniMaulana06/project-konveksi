@@ -4,9 +4,17 @@ namespace App\Livewire\Vendor;
 
 use App\Models\Vendor;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    public $search = '';
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
     public function destroy($id)
     {
         $vendor = Vendor::find($id);
@@ -19,7 +27,15 @@ class Index extends Component
     }
     public function render()
     {
-        $vendors = Vendor::all();
+        $vendors = Vendor::query()
+            ->when([
+                $this->search,
+                fn($query) =>
+                $query->where('nama_vendor', 'like', '%' . $this->search . '%')
+                    ->orWhere('barang_vendor', 'like', '%' . $this->search . '%')
+                    ->orWhere('no_vendor', 'like', '%' . $this->search . '%')
+            ])->latest()->paginate(3);
+
         return view('livewire.vendor.index', compact('vendors'));
     }
 }
