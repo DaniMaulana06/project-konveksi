@@ -18,7 +18,7 @@ class Create extends Component
     public $category_id;
     #[Rule('required|string|max:50')]
     public $deskripsi_produk;
-    #[Rule('required|file|max:250')]
+    #[Rule('required|file|max:1000')]
     public $gambar;
 
     public function store()

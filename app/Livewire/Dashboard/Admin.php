@@ -165,6 +165,12 @@ class Admin extends Component
         }
     }
 
+    public function refreshActivities()
+    {
+        $this->loadTopProducts();
+        $this->dispatch('activities-refreshed');
+    }
+
     public function render()
     {
         return view('livewire.dashboard.admin');

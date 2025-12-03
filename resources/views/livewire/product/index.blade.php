@@ -2,7 +2,7 @@
     Produk
 @endsection
 
-<div class="container md-5 mt-3">
+<div class="container md-5 mt-2">
     <div class="row mb-3">
         <div class="col md-12">
             <!-- flash message -->

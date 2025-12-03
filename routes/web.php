@@ -66,7 +66,7 @@ Route::middleware(['auth', 'role:produksi'])->group(function () {
         Route::get('/edit/{id}', Edit::class)->name('bahan.edit');
     });
 
-    Route::get('/vendor/list', \App\Livewire\Vendor\ListVendor::class)->name('vendor.list');
+    Route::get('/vendor/list', \App\Livewire\Vendor\Listvendor::class)->name('vendor.list');
 
     Route::get('/produksi', ProductionList::class)->name('production.index');
 

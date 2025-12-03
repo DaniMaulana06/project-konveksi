@@ -19,7 +19,6 @@ class ProductionListModel extends Model
         return $this->hasMany(\App\Models\ProductionMaterial::class, 'production_list_id');
     }
 
-    // ===== TAMBAHKAN METHOD BARU INI =====
     protected static function booted()
     {
         // Saat produksi dibuat (production list baru)
@@ -63,6 +62,4 @@ class ProductionListModel extends Model
             }
         });
     }
-    // ===== AKHIR KODE BARU =====
-
 }

@@ -16,6 +16,7 @@ class ProductionMaterialForm extends Component
     public $inputs = [];
     public $existingMaterials = false;
     public $hasMaterials = false;
+    public $productionList; // Tambahkan property ini
 
     // Helper method to get MaterialManagementService
     protected function getMaterialService()
@@ -37,8 +38,8 @@ class ProductionMaterialForm extends Component
 
     public function mount($orderId)
     {
-        $production = ProductionListModel::where('order_id', $orderId)->first();
-        $this->production_list_id = $production->id;
+        $this->productionList = ProductionListModel::with('order')->where('order_id', $orderId)->first();
+        $this->production_list_id = $this->productionList->id;
 
         $this->materials = Bahan::all();
 

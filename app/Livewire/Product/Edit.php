@@ -26,7 +26,7 @@ class Edit extends Component
     public $deskripsi_produk;
 
     // Gambar baru
-    #[Rule('nullable|file|max:250')]
+    #[Rule('nullable|file|max:1000')]
     public $gambar_baru;
 
     // Menampilkan gambar lama

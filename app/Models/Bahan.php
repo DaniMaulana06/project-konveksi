@@ -18,8 +18,6 @@ class Bahan extends Model
     public function orderDetails(){
         return $this->hasMany(OrderDetail::class);
     }
-
-    // ===== TAMBAHKAN METHOD BARU INI =====
     protected static function booted()
     {
         // Saat bahan baru ditambahkan
@@ -77,5 +75,4 @@ class Bahan extends Model
             );
         });
     }
-    // ===== AKHIR KODE BARU =====
 }

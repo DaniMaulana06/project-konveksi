@@ -2,7 +2,7 @@
     Bahan
 @endsection
 
-<div class="container mt-5">
+<div class="container mt-2">
     {{-- ALERT --}}
     @if (session()->has('message'))
         <div class="alert alert-primary shadow-sm rounded-3 border-0">

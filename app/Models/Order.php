@@ -14,6 +14,7 @@ class Order extends Model
         'asal_instansi',
         'jumlah_order',
         'file_panduan',
+        'keterangan',
         'harga_total',
         'status_order',
         'created_by',
@@ -48,7 +49,6 @@ class Order extends Model
         return $this->hasMany(OrderMaterial::class);
     }
 
-    // ========== BAGIAN INI YANG DIUPDATE ==========
     protected static function booted()
     {
         // Yang sudah ada (jangan dihapus)
@@ -57,10 +57,8 @@ class Order extends Model
                 $order->created_by = auth()->id();
             }
         });
-
-        // ===== TAMBAHKAN KODE BARU DIBAWAH INI =====
         
-        // Saat order berhasil dibuat (setelah disimpan ke database)
+        // isi otomatis aktivitas ketika order dibuat
         static::created(function ($order) {
             \App\Models\Aktivitas::catat(
                 jenis: 'order',
@@ -72,7 +70,7 @@ class Order extends Model
             );
         });
 
-        // Saat order diupdate
+        // isi otomatis aktivitas ketika order diupdate
         static::updated(function ($order) {
             // Cek apakah status_order yang berubah
             if ($order->isDirty('status_order')) {
@@ -102,9 +100,7 @@ class Order extends Model
                 );
             }
         });
-        // ===== AKHIR KODE BARU =====
     }
-    // ========== AKHIR BAGIAN UPDATE ==========
 
     public function productionMaterials()
     {

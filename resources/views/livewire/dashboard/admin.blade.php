@@ -1,7 +1,7 @@
+@section('title', 'Dashboard Admin')
+
 {{-- Dashboard dengan Toast Notification Real-time & Grafik Statistik --}}
 <div>
-    @section('title', 'Dashboard Admin')
-
     @push('styles')
         <style>
             .header-card {
@@ -76,14 +76,6 @@
                 color: white;
             }
 
-            .card {
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
-            }
-
-            .card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-            }
 
             .card-body h2 {
                 font-size: 2.5rem;
@@ -94,20 +86,20 @@
                 height: 350px !important;
             }
 
-            .bg-primary-subtle { 
-                background-color: rgba(13, 110, 253, 0.1) !important; 
+            .bg-primary-subtle {
+                background-color: rgba(13, 110, 253, 0.1) !important;
             }
 
-            .bg-success-subtle { 
-                background-color: rgba(25, 135, 84, 0.1) !important; 
+            .bg-success-subtle {
+                background-color: rgba(25, 135, 84, 0.1) !important;
             }
 
-            .bg-warning-subtle { 
-                background-color: rgba(255, 193, 7, 0.1) !important; 
+            .bg-warning-subtle {
+                background-color: rgba(255, 193, 7, 0.1) !important;
             }
 
-            .bg-info-subtle { 
-                background-color: rgba(13, 202, 240, 0.1) !important; 
+            .bg-info-subtle {
+                background-color: rgba(13, 202, 240, 0.1) !important;
             }
 
             .table thead th {
@@ -123,6 +115,23 @@
 
             .table tbody tr:hover {
                 background-color: rgba(0, 0, 0, 0.02);
+            }
+
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+
+            .card-hover:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+            }
+
+            .icon-box {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 60px;
+                height: 60px;
             }
 
             @media (max-width: 576px) {
@@ -146,18 +155,23 @@
                 .date-box {
                     font-size: 0.85rem;
                 }
+
+                .icon-box {
+                    width: 50px;
+                    height: 50px;
+                }
             }
         </style>
     @endpush
 
     <div class="container-fluid p-4">
         {{-- Header Card --}}
-        <div class="card border-0 shadow-sm mb-4 header-card">
+        <div class="card border-0 shadow-sm mb-4 header-card rounded-4">
             <div class="card-body p-4">
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="d-flex align-items-center">
-                            <div class="header-icon-box rounded-2 p-2 me-2">
+                            <div class="header-icon-box rounded-4 p-2 me-2">
                                 <i class="fas fa-chart-line text-white fs-2"></i>
                             </div>
                             <div>
@@ -167,9 +181,10 @@
                     </div>
                     <div class="col-md-6 text-md-end mt-3 mt-md-0">
                         <div class="d-flex align-items-center justify-content-md-end">
-                            <div class="date-box bg-light rounded-3 p-3">
+                            <div class="date-box bg-light rounded-4 p-3">
                                 <i class="fas fa-calendar-alt text-primary me-2"></i>
-                                <span class="fw-semibold">{{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM YYYY') }}</span>
+                                <span
+                                    class="fw-semibold">{{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM YYYY') }}</span>
                             </div>
                         </div>
                     </div>
@@ -177,41 +192,65 @@
             </div>
         </div>
 
-        {{-- 4 Cards Horizontal --}}
+        {{-- Status Order Cards --}}
         <div wire:poll.3s="checkNewActivity">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
-                <div class="col">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body text-center p-4">
-                            <p class="text-muted small mb-2">Total Order</p>
-                            <h2 class="fw-bold text-primary mb-0">{{ $totalOrder }}</h2>
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-4 col-lg">
+                    <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="icon-box bg-primary bg-opacity-10 rounded-4 p-3">
+                                    <i class="fas fa-shopping-cart text-primary fs-4"></i>
+                                </div>
+                                <span class="badge bg-primary-subtle text-primary">Total</span>
+                            </div>
+                            <h3 class="fw-bold text-dark mb-1">{{ $totalOrder ?? 0 }}</h3>
+                            <p class="text-muted small mb-0">Total Order</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="col">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body text-center p-4">
-                            <p class="text-muted small mb-2">Pending</p>
-                            <h2 class="fw-bold text-warning mb-0">{{ $orderPending }}</h2>
+                <div class="col-6 col-md-4 col-lg">
+                    <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="icon-box bg-warning bg-opacity-10 rounded-4 p-3">
+                                    <i class="fas fa-clock text-warning fs-4"></i>
+                                </div>
+                                <span class="badge bg-warning-subtle text-warning">Menunggu</span>
+                            </div>
+                            <h3 class="fw-bold text-dark mb-1">{{ $orderPending ?? 0 }}</h3>
+                            <p class="text-muted small mb-0">Pending</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="col">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body text-center p-4">
-                            <p class="text-muted small mb-2">Sedang Diproses</p>
-                            <h2 class="fw-bold text-info mb-0">{{ $orderProses }}</h2>
+                <div class="col-6 col-md-4 col-lg">
+                    <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="icon-box bg-info bg-opacity-10 rounded-4 p-3">
+                                    <i class="fas fa-cog fa-spin text-info fs-4"></i>
+                                </div>
+                                <span class="badge bg-info-subtle text-info">Produksi</span>
+                            </div>
+                            <h3 class="fw-bold text-dark mb-1">{{ $orderProses ?? 0 }}</h3>
+                            <p class="text-muted small mb-0">Sedang Diproses</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="col">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body text-center p-4">
-                            <p class="text-muted small mb-2">Selesai</p>
-                            <h2 class="fw-bold text-success mb-0">{{ $orderSelesai }}</h2>
+                <div class="col-6 col-md-4 col-lg">
+                    <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="icon-box bg-success bg-opacity-10 rounded-4 p-3">
+                                    <i class="fas fa-check-circle text-success fs-4"></i>
+                                </div>
+                                <span class="badge bg-success-subtle text-success">Selesai</span>
+                            </div>
+                            <h3 class="fw-bold text-dark mb-1">{{ $orderSelesai ?? 0 }}</h3>
+                            <p class="text-muted small mb-0">Selesai</p>
                         </div>
                     </div>
                 </div>
@@ -221,17 +260,15 @@
         {{-- Grafik Statistik --}}
         <div class="row g-3 mb-4">
             <div class="col-12">
-                <div class="card border-0 shadow-sm" wire:ignore>
-                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
+                <div class="card border-0 shadow-sm rounded-4" wire:ignore>
+                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3 rounded-4">
                         <h5 class="fw-bold mb-0">
                             <i class="fas fa-chart-line text-primary me-2"></i>
                             Statistik Total Produksi 6 Bulan Terakhir
                         </h5>
                         <div>
-                            <span class="badge bg-primary rounded-pill me-2" id="totalBadge">{{ array_sum($monthlyOrderData ?? [0]) }} Pcs</span>
-                            <button onclick="refreshChart()" class="btn btn-sm btn-outline-primary" type="button">
-                                <i class="fas fa-sync-alt" id="syncIcon"></i>
-                            </button>
+                            <span class="badge bg-primary rounded-pill me-2"
+                                id="totalBadge">{{ array_sum($monthlyOrderData ?? [0]) }} Pcs</span>
                         </div>
                     </div>
                     <div class="card-body p-4">
@@ -246,13 +283,22 @@
         {{-- Top Produk --}}
         <div class="row g-3 mb-4">
             <div class="col-lg-12">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-white border-0 py-3">
-                        <h5 class="fw-bold mb-0">
-                            <i class="fas fa-fire text-danger me-2"></i>Top 5 Barang Paling Sering Diproduksi
-                        </h5>
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-header bg-white border-0 py-3 rounded-4">
+                        <div class="d-flex justify-content-between align-items-center mt-3 ms-3 me-3">
+                            <h5 class="fw-bold text-primary">
+                                <i class="fas fa-fire text-danger me-2"></i>Top 5 Barang Paling Sering Diproduksi
+                            </h5>
+                            <button wire:click="refreshActivities" class="btn btn-sm btn-outline-primary float-end"
+                                wire:loading.attr="disabled">
+                                <span wire:loading.remove wire:target="refreshActivities"><i
+                                        class="fas fa-sync-alt me-1"></i> Refresh</span>
+                                <span wire:loading wire:target="refreshActivities"><i
+                                        class="fas fa-spinner fa-spin me-1"></i> Refreshing...</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="card-body py-4">
                         <div class="table-responsive">
                             <table class="table table-hover align-middle mb-0">
                                 <thead class="bg-light">
@@ -266,53 +312,55 @@
                                 </thead>
                                 <tbody>
                                     @forelse(($topProducts ?? []) as $index => $product)
-                                    <tr>
-                                        <td class="ps-4">
-                                            @if($index == 0)
-                                            <span class="badge bg-warning text-dark fs-6 px-3 py-2">
-                                                <i class="fas fa-crown me-1"></i>#{{ $index + 1 }}
-                                            </span>
-                                            @elseif($index == 1)
-                                            <span class="badge bg-secondary fs-6 px-3 py-2">
-                                                <i class="fas fa-medal me-1"></i>#{{ $index + 1 }}
-                                            </span>
-                                            @elseif($index == 2)
-                                            <span class="badge bg-danger fs-6 px-3 py-2">
-                                                <i class="fas fa-award me-1"></i>#{{ $index + 1 }}
-                                            </span>
-                                            @else
-                                            <span class="badge bg-light text-dark fs-6 px-3 py-2">#{{ $index + 1 }}</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="bg-primary bg-opacity-10 rounded p-2 me-3">
-                                                    <i class="fas fa-box text-primary"></i>
+                                        <tr>
+                                            <td class="ps-4">
+                                                @if ($index == 0)
+                                                    <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+                                                        <i class="fas fa-crown me-1"></i>#{{ $index + 1 }}
+                                                    </span>
+                                                @elseif($index == 1)
+                                                    <span class="badge bg-secondary fs-6 px-3 py-2">
+                                                        <i class="fas fa-medal me-1"></i>#{{ $index + 1 }}
+                                                    </span>
+                                                @elseif($index == 2)
+                                                    <span class="badge bg-danger fs-6 px-3 py-2">
+                                                        <i class="fas fa-award me-1"></i>#{{ $index + 1 }}
+                                                    </span>
+                                                @else
+                                                    <span
+                                                        class="badge bg-light text-dark fs-6 px-3 py-2">#{{ $index + 1 }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="bg-primary bg-opacity-10 rounded p-2 me-3">
+                                                        <i class="fas fa-box text-primary"></i>
+                                                    </div>
+                                                    <h6 class="mb-0">{{ $product['nama_produk'] }}</h6>
                                                 </div>
-                                                <h6 class="mb-0">{{ $product['nama_produk'] }}</h6>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-info-subtle text-info">
-                                                {{ $product['kategori'] ?? 'Uncategorized' }}
-                                            </span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="badge bg-primary-subtle text-primary fs-6 px-3 py-2">
-                                                {{ $product['total_orders'] }}
-                                            </span>
-                                        </td>
-                                        <td class="text-center">
-                                            <strong class="text-success">{{ $product['total_quantity'] }} pcs</strong>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info-subtle text-info">
+                                                    {{ $product['kategori'] ?? 'Uncategorized' }}
+                                                </span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge bg-primary-subtle text-primary fs-6 px-3 py-2">
+                                                    {{ $product['total_orders'] }}
+                                                </span>
+                                            </td>
+                                            <td class="text-center">
+                                                <strong class="text-success">{{ $product['total_quantity'] }}
+                                                    pcs</strong>
+                                            </td>
+                                        </tr>
                                     @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center py-5">
-                                            <i class="fas fa-inbox text-muted fs-1 mb-3 d-block"></i>
-                                            <p class="text-muted mb-0">Belum ada data produksi</p>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td colspan="5" class="text-center py-5">
+                                                <i class="fas fa-inbox text-muted fs-1 mb-3 d-block"></i>
+                                                <p class="text-muted mb-0">Belum ada data produksi</p>
+                                            </td>
+                                        </tr>
                                     @endforelse
                                 </tbody>
                             </table>
@@ -325,7 +373,8 @@
 
     {{-- Toast Container --}}
     <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
-        <div id="activityToast" class="toast align-items-center border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="activityToast" class="toast align-items-center border-0 shadow-lg" role="alert"
+            aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body d-flex align-items-start" style="min-width: 300px;">
                     <div class="flex-shrink-0 me-3">
@@ -341,7 +390,8 @@
                         </small>
                     </div>
                 </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
             </div>
         </div>
     </div>
@@ -497,7 +547,8 @@
                 Livewire.on('new-activity', (event) => {
                     const data = event[0];
                     document.getElementById('toastTitle').textContent = data.judul;
-                    document.getElementById('toastMessage').textContent = data.deskripsi || 'Aktivitas baru';
+                    document.getElementById('toastMessage').textContent = data.deskripsi ||
+                        'Aktivitas baru';
 
                     const toast = document.getElementById('activityToast');
                     toast.className = 'toast align-items-center border-0 shadow-lg bg-' + data.warna;

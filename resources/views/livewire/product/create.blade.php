@@ -82,24 +82,22 @@
 
                         {{-- BUTTON --}}
                         <div class="d-flex justify-content-end">
+                            <a href="{{ route('product.index') }}" class="btn btn-danger px-4 me-2">Batal</a>
+
                             <button type="submit" class="btn btn-primary px-4"
                                     wire:loading.attr="disabled">
                                 <span wire:loading.remove wire:target="store">
                                     Simpan
                                 </span>
-
                                 <span wire:loading wire:target="store">
                                     <span class="spinner-border spinner-border-sm"></span>
                                     Menyimpan...
                                 </span>
                             </button>
                         </div>
-
                     </form>
-
                 </div>
             </div>
-
         </div>
     </div>  
 </div>

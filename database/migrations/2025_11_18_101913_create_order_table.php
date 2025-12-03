@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('jumlah_order');
             $table->decimal('harga_total', 15, 2);
             $table->string('file_panduan');
+            $table->string('keterangan')->nullable();
             $table->foreignId('created_by')->constrained('users');
             $table->enum('status_order', ['pending', 'proses', 'selesai', 'dikirim'])->default('pending');
             $table->timestamps();

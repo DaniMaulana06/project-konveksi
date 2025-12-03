@@ -25,7 +25,6 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    // ===== TAMBAHKAN METHOD BARU INI =====
     protected static function booted()
     {
         // Saat produk baru ditambahkan
@@ -63,5 +62,4 @@ class Product extends Model
             );
         });
     }
-    // ===== AKHIR KODE BARU =====
 }

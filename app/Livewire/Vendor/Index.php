@@ -28,13 +28,11 @@ class Index extends Component
     public function render()
     {
         $vendors = Vendor::query()
-            ->when([
-                $this->search,
-                fn($query) =>
+            ->when($this->search, function ($query) {
                 $query->where('nama_vendor', 'like', '%' . $this->search . '%')
                     ->orWhere('barang_vendor', 'like', '%' . $this->search . '%')
-                    ->orWhere('no_vendor', 'like', '%' . $this->search . '%')
-            ])->latest()->paginate(3);
+                    ->orWhere('no_vendor', 'like', '%' . $this->search . '%');
+            })->latest()->paginate(10);
 
         return view('livewire.vendor.index', compact('vendors'));
     }

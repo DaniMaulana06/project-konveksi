@@ -20,7 +20,7 @@ class Index extends Component
     {
         $order = Order::findOrFail($id);
 
-        if ($order->status_order == 'proses' || $order->status_order == 'selesai' || $order->status_order == 'dikirim') {
+        if ($order->status_order == 'selesai' || $order->status_order == 'dikirim') {
             session()->flash('error', 'Order sudah ' . $order->status_order . ', tidak dapat dihapus.');
             return redirect()->route('order.index');
         }

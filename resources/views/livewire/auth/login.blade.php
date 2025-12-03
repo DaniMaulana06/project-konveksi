@@ -2,10 +2,10 @@
 Login
 @endsection
 
-<div class="">
+<div>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-5">
+            <div class="col-md-5 mt-5">
 
                 {{-- Alert --}}
                 @if (session()->has('message'))
@@ -15,8 +15,8 @@ Login
                     </div>
                 @endif
 
-                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                    <div class="card-header bg-primary text-white text-center py-4">
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden mt-5">
+                    <div class="card-header bg-primary text-white text-center py-2">
                         <h4 class="mb-0 fw-bold">Selamat Datang</h4>
                         <small class="opacity-75">Silakan login untuk melanjutkan</small>
                     </div>
@@ -42,7 +42,7 @@ Login
                                 <input type="password"
                                     class="form-control rounded-3 @error('password') is-invalid @enderror"
                                     wire:model.defer="password"
-                                    placeholder="••••••••">
+                                    placeholder="********">
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

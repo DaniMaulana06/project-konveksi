@@ -35,9 +35,9 @@
                             <input type="text" class="form-control" id="no_vendor" wire:model="no_vendor">
                             @error('no_vendor') <span>{{ $message }}</span> @enderror
                         </div>
-                
                         <button type="submit" class="btn btn-primary float-end">Simpan</button>
                     </form>
+                      <a href="{{ route('vendor.index') }}" class="btn btn-danger px-4 me-2 float-end">Batal</a>
                 </div>
             </div>
         </div>

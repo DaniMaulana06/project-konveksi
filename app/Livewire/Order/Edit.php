@@ -31,6 +31,7 @@ class Edit extends Component
         $this->no_telp         = $this->order->no_telp;
         $this->asal_instansi   = $this->order->asal_instansi;
         $this->jumlah_order    = $this->order->jumlah_order;
+        $this->keterangan      = $this->order->keterangan;
         $this->harga_total     = $this->order->harga_total;
         $this->product_id      = $this->order->product_id;
 
@@ -47,6 +48,7 @@ class Edit extends Component
             'no_telp' => 'required|max:12',
             'asal_instansi' => 'nullable|max:100',
             'jumlah_order' => 'required|integer|min:1',
+            'keterangan' => 'nullable|max:255',
             'harga_total' => 'required|numeric',
             'product_id' => 'required|exists:product,id',
             'file_panduan' => 'nullable|file|mimes:pdf,docx|max:2048',

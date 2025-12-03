@@ -1,6 +1,6 @@
 @section('title', 'Production List')
 
-<div class="container mt-5">
+<div class="container mt-2">
 
     {{-- CARD HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">

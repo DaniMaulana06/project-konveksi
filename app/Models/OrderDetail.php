@@ -12,6 +12,7 @@ class OrderDetail extends Model
         'product_id',
         'jumlah', 
         'harga_satuan', 
+        'keterangan',
         'total_harga'
     ];
 

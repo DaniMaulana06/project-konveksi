@@ -1,6 +1,6 @@
 @section('title', 'Kategori')
 
-<div class="container mt-4">
+<div class="container mt-2">
 
     {{-- ALERT --}}
     @if (session()->has('message'))

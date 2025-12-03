@@ -1,8 +1,10 @@
+@section('title', 'Dashboard Produksi')
+
 {{-- Dashboard Konveksi dengan Statistik Lengkap --}}
 <div>
     <div class="container-fluid p-4">
         {{-- Header Card --}}
-        <div class="card border-0 shadow-sm mb-4 header-card">
+        <div class="card border-0 shadow-sm mb-4 header-card rounded-4">
             <div class="card-body p-4">
                 <div class="row align-items-center">
                     <div class="col-md-6">
@@ -31,7 +33,7 @@
         {{-- Status Order Cards --}}
         <div class="row g-3 mb-4">
             <div class="col-6 col-md-4 col-lg">
-                <div class="card border-0 shadow-sm h-100 card-hover">
+                <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div class="icon-box bg-primary bg-opacity-10 rounded-3 p-3">
@@ -46,7 +48,7 @@
             </div>
 
             <div class="col-6 col-md-4 col-lg">
-                <div class="card border-0 shadow-sm h-100 card-hover">
+                <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div class="icon-box bg-warning bg-opacity-10 rounded-3 p-3">
@@ -61,7 +63,7 @@
             </div>
 
             <div class="col-6 col-md-4 col-lg">
-                <div class="card border-0 shadow-sm h-100 card-hover">
+                <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div class="icon-box bg-info bg-opacity-10 rounded-3 p-3">
@@ -76,7 +78,7 @@
             </div>
 
             <div class="col-6 col-md-4 col-lg">
-                <div class="card border-0 shadow-sm h-100 card-hover">
+                <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div class="icon-box bg-success bg-opacity-10 rounded-3 p-3">
@@ -91,7 +93,7 @@
             </div>
 
             <div class="col-6 col-md-4 col-lg">
-                <div class="card border-0 shadow-sm h-100 card-hover">
+                <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div class="icon-box bg-info bg-opacity-10 rounded-3 p-3">
@@ -109,8 +111,8 @@
         {{-- Statistik Bahan --}}
         <div class="row g-3 mb-4">
             <div class="col-lg-12">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-header bg-white border-0 py-3">
+                <div class="card border-0 shadow-sm h-100 rounded-4">
+                    <div class="card-header bg-white border-0 py-3 rounded-4">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="fw-bold mb-0">
                                 <i class="fas fa-boxes text-primary me-2"></i>Status Bahan
@@ -163,16 +165,17 @@
         </div>
 
         {{-- Aktivitas Terbaru  --}}
-        <div class="row g-3">
+        <div class="row g-3 mb-4">
             <div class="col-lg-12">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-white border-0 py-3">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-header bg-white border-0 py-3 rounded-4">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="fw-bold mb-0">
-                                <i class="fas fa-bell text-danger me-2"></i>Aktivitas Terbaru
+                            <h5 class="fw-bold mb-0 text-primary">
+                                <i class="fas fa-bell text-primary me-2"></i>Aktivitas Terbaru
                             </h5>
-                            <button wire:click="refreshActivities" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-sync-alt me-1"></i> Refresh
+                            <button wire:click="refreshActivities" class="btn btn-sm btn-outline-primary" wire:loading.attr="disabled">
+                                <span wire:loading.remove wire:target="refreshActivities"><i class="fas fa-sync-alt me-1"></i> Refresh</span>
+                                <span wire:loading wire:target="refreshActivities"><i class="fas fa-spinner fa-spin me-1"></i> Refreshing...</span>
                             </button>
                         </div>
                     </div>
