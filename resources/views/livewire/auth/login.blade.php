@@ -1,5 +1,5 @@
 @section('title')
-Login
+    Login
 @endsection
 
 <div>
@@ -29,8 +29,7 @@ Login
                                 <label class="form-label fw-semibold">Email</label>
                                 <input type="email"
                                     class="form-control rounded-3 @error('email') is-invalid @enderror"
-                                    wire:model.defer="email"
-                                    placeholder="contoh@email.com">
+                                    wire:model.defer="email" placeholder="contoh@email.com">
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -41,8 +40,7 @@ Login
                                 <label class="form-label fw-semibold">Password</label>
                                 <input type="password"
                                     class="form-control rounded-3 @error('password') is-invalid @enderror"
-                                    wire:model.defer="password"
-                                    placeholder="********">
+                                    wire:model.defer="password" placeholder="********">
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -63,7 +61,8 @@ Login
                         <div class="text-center mt-4">
                             <small class="text-muted">
                                 Belum punya akun?
-                                <a href="{{ route('register') }}" class="text-decoration-none fw-semibold" wire:navigate>
+                                <a href="{{ route('register') }}" class="text-decoration-none fw-semibold"
+                                    wire:navigate>
                                     Daftar
                                 </a>
                             </small>

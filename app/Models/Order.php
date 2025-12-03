@@ -57,7 +57,7 @@ class Order extends Model
                 $order->created_by = auth()->id();
             }
         });
-        
+
         // isi otomatis aktivitas ketika order dibuat
         static::created(function ($order) {
             \App\Models\Aktivitas::catat(
@@ -98,6 +98,43 @@ class Order extends Model
                     warna: $warna[$status] ?? 'info',
                     reference: $order
                 );
+            } else {
+                // Catat aktivitas untuk perubahan data order lainnya (bukan status)
+                // Hanya catat jika ada field yang benar-benar berubah
+                if ($order->isDirty()) {
+                    $changedFields = [];
+
+                    // Daftar field yang akan dicatat perubahannya
+                    $trackableFields = [
+                        'nama_order' => 'Nama Order',
+                        'nama_customer' => 'Nama Customer',
+                        'no_telp' => 'No. Telepon',
+                        'asal_instansi' => 'Asal Instansi',
+                        'jumlah_order' => 'Jumlah Order',
+                        'harga_total' => 'Harga Total',
+                        'keterangan' => 'Keterangan',
+                        'file_panduan' => 'File Panduan'
+                    ];
+
+                    foreach ($trackableFields as $field => $label) {
+                        if ($order->isDirty($field)) {
+                            $changedFields[] = $label;
+                        }
+                    }
+
+                    if (!empty($changedFields)) {
+                        $fieldList = implode(', ', $changedFields);
+
+                        \App\Models\Aktivitas::catat(
+                            jenis: 'order',
+                            judul: 'Order Diperbarui',
+                            deskripsi: "Order #{$order->id} - {$order->nama_order} diperbarui ({$fieldList})",
+                            icon: 'fa-edit',
+                            warna: 'info',
+                            reference: $order
+                        );
+                    }
+                }
             }
         });
     }

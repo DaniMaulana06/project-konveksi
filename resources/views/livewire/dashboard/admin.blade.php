@@ -262,7 +262,7 @@
             <div class="col-12">
                 <div class="card border-0 shadow-sm rounded-4" wire:ignore>
                     <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3 rounded-4">
-                        <h5 class="fw-bold mb-0">
+                        <h5 class="fw-bold mb-0 text-primary">
                             <i class="fas fa-chart-line text-primary me-2"></i>
                             Statistik Total Produksi 6 Bulan Terakhir
                         </h5>

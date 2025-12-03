@@ -11,15 +11,13 @@
             </a>
         </div>
     </div>
-    
+
 
     {{-- SEARCH --}}
     <div class="card shadow-sm border-0 rounded-4 mb-4">
         <div class="card-body">
-            <input type="text"
-                   class="form-control border-primary rounded-pill px-4"
-                   placeholder="Cari nama order atau material..."
-                   wire:model.live.debounce.300ms="search">
+            <input type="text" class="form-control border-primary rounded-pill px-4"
+                placeholder="Cari nama order atau material..." wire:model.live.debounce.300ms="search">
         </div>
     </div>
 
@@ -29,7 +27,7 @@
             {{-- Filter search --}}
             @php
                 $orderName = strtolower($items->first()->productionList->order->nama_order);
-                $filteredItems = $items->filter(function($item) {
+                $filteredItems = $items->filter(function ($item) {
                     return stripos($item->material->nama_bahan, $this->search) !== false;
                 });
             @endphp
@@ -37,20 +35,15 @@
             @if (stripos($orderName, $this->search) !== false || $filteredItems->isNotEmpty())
                 <div class="accordion-item mb-3 shadow-sm rounded-4 border">
                     <h2 class="accordion-header" id="heading{{ $prodId }}">
-                        <button class="accordion-button collapsed bg-primary text-white rounded-4"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapse{{ $prodId }}"
-                                aria-expanded="false"
-                                aria-controls="collapse{{ $prodId }}">
+                        <button class="accordion-button collapsed bg-primary text-white rounded-4" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapse{{ $prodId }}"
+                            aria-expanded="false" aria-controls="collapse{{ $prodId }}">
                             {{ $items->first()->productionList->order->nama_order }}
                         </button>
                     </h2>
-                    <div id="collapse{{ $prodId }}"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="heading{{ $prodId }}"
-                         data-bs-parent="#materialAccordion">
-                        <div class="accordion-body p-0">
+                    <div id="collapse{{ $prodId }}" class="accordion-collapse collapse"
+                        aria-labelledby="heading{{ $prodId }}" data-bs-parent="#materialAccordion">
+                        <div class="accordion-body px-3">
                             <table class="table align-middle m-2">
                                 <thead class="table-light">
                                     <tr>
