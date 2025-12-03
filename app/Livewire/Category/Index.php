@@ -28,7 +28,7 @@ class Index extends Component
         $categories = \App\Models\Category::query()
         ->when($this->search, fn($query) =>
         $query->where('nama_kategori', 'like', '%' . $this->search . '%'))
-        ->latest()->paginate(5);
+        ->latest()->paginate(10);
         return view('livewire.category.index',[
             'categories' => $categories
         ]);

@@ -31,6 +31,7 @@ class ProductionMaterialList extends Component
                     $q->where('nama_bahan', 'like', '%' . $this->search . '%');
                 });
             })
+            ->latest()
             ->get()
             ->groupBy('production_list_id');
 

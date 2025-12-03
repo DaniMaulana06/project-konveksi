@@ -2,13 +2,12 @@
 Register
 @endsection
 
-<div class="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+<div>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
-
-                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                    <div class="card-header bg-primary text-white text-center py-4">
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden mt-3">
+                    <div class="card-header bg-primary text-white text-center py-2">
                         <h4 class="mb-0 fw-bold">Buat Akun Baru</h4>
                         <small class="opacity-75">Lengkapi data untuk mendaftar</small>
                     </div>
@@ -18,7 +17,7 @@ Register
                         <form wire:submit.prevent="register">
 
                             {{-- Nama --}}
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label class="form-label fw-semibold">Nama</label>
                                 <input type="text"
                                     class="form-control rounded-3 @error('name') is-invalid @enderror"
@@ -30,7 +29,7 @@ Register
                             </div>
 
                             {{-- Email --}}
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label class="form-label fw-semibold">Email</label>
                                 <input type="email"
                                     class="form-control rounded-3 @error('email') is-invalid @enderror"
@@ -42,7 +41,7 @@ Register
                             </div>
 
                             {{-- Role --}}
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label class="form-label fw-semibold">Role</label>
                                 <select
                                     class="form-select rounded-3 @error('role') is-invalid @enderror"
@@ -57,19 +56,19 @@ Register
                             </div>
 
                             {{-- Password --}}
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label class="form-label fw-semibold">Password</label>
                                 <input type="password"
                                     class="form-control rounded-3 @error('password') is-invalid @enderror"
                                     wire:model.defer="password"
-                                    placeholder="••••••••">
+                                    placeholder="********">
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             {{-- Konfirmasi Password --}}
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label class="form-label fw-semibold">Konfirmasi Password</label>
                                 <input type="password"
                                     class="form-control rounded-3"

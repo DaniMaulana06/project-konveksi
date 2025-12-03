@@ -1,11 +1,367 @@
-@section('title')
-    Dashboard Produksi
-@endsection
+@section('title', 'Dashboard Produksi')
 
-<div class="m-4">
-    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">
-        <div>
-            <h4 class="fw-bold text-primary mb-0">Dashboard</h4>
+{{-- Dashboard Konveksi dengan Statistik Lengkap --}}
+<div>
+    <div class="container-fluid p-4">
+        {{-- Header Card --}}
+        <div class="card border-0 shadow-sm mb-4 header-card rounded-4">
+            <div class="card-body p-4">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="header-icon-box rounded-3 p-3 me-3">
+                                <i class="fas fa-chart-line text-white fs-2"></i>
+                            </div>
+                            <div>
+                                <h2 class="fw-bold mb-1 text-primary">Dashboard Produksi</h2>
+                                <p class="text-muted mb-0 small">Monitoring & Analisis Produksi Real-time</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                        <div class="d-flex align-items-center justify-content-md-end">
+                            <div class="date-box bg-light rounded-3 p-3">
+                                <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                <span class="fw-semibold">{{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM YYYY') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Status Order Cards --}}
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-4 col-lg">
+                <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="icon-box bg-primary bg-opacity-10 rounded-3 p-3">
+                                <i class="fas fa-shopping-cart text-primary fs-4"></i>
+                            </div>
+                            <span class="badge bg-primary-subtle text-primary">Total</span>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-1">{{ $totalOrder ?? 0 }}</h3>
+                        <p class="text-muted small mb-0">Total Order</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg">
+                <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="icon-box bg-warning bg-opacity-10 rounded-3 p-3">
+                                <i class="fas fa-clock text-warning fs-4"></i>
+                            </div>
+                            <span class="badge bg-warning-subtle text-warning">Menunggu</span>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-1">{{ $orderPending ?? 0 }}</h3>
+                        <p class="text-muted small mb-0">Pending</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg">
+                <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="icon-box bg-info bg-opacity-10 rounded-3 p-3">
+                                <i class="fas fa-cog fa-spin text-info fs-4"></i>
+                            </div>
+                            <span class="badge bg-info-subtle text-info">Produksi</span>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-1">{{ $orderProses ?? 0 }}</h3>
+                        <p class="text-muted small mb-0">Sedang Diproses</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg">
+                <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="icon-box bg-success bg-opacity-10 rounded-3 p-3">
+                                <i class="fas fa-check-circle text-success fs-4"></i>
+                            </div>
+                            <span class="badge bg-success-subtle text-success">Selesai</span>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-1">{{ $orderSelesai ?? 0 }}</h3>
+                        <p class="text-muted small mb-0">Selesai</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg">
+                <div class="card border-0 shadow-sm h-100 card-hover rounded-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="icon-box bg-info bg-opacity-10 rounded-3 p-3">
+                                <i class="fas fa-truck text-info fs-4"></i>
+                            </div>
+                            <span class="badge bg-info-subtle text-info">Dikirim</span>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-1">{{ $orderDikirim ?? 0 }}</h3>
+                        <p class="text-muted small mb-0">Dikirim</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Statistik Bahan --}}
+        <div class="row g-3 mb-4">
+            <div class="col-lg-12">
+                <div class="card border-0 shadow-sm h-100 rounded-4">
+                    <div class="card-header bg-white border-0 py-3 rounded-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold mb-0">
+                                <i class="fas fa-boxes text-primary me-2"></i>Status Bahan
+                            </h5>
+                            <a href="/bahan/create" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-plus me-1"></i>Tambah Bahan
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="p-3 rounded-3 bg-light border-start border-4 border-primary">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <p class="text-muted small mb-1">Total Bahan</p>
+                                            <h4 class="fw-bold mb-0">{{ $totalMaterials ?? 0 }}</h4>
+                                        </div>
+                                        <i class="fas fa-warehouse text-primary fs-2"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 rounded-3 bg-light border-start border-4 border-danger">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <p class="text-muted small mb-1">Stok Menipis</p>
+                                            <h4 class="fw-bold mb-0 text-danger">{{ $lowStock ?? 0 }}</h4>
+                                        </div>
+                                        <i class="fas fa-exclamation-triangle text-danger fs-2"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if(($lowStock ?? 0) > 0)
+                        <div class="alert alert-warning border-0 mt-4 mb-0" role="alert">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-bell me-3 fs-5"></i>
+                                <div>
+                                    <strong>Perhatian!</strong>
+                                    <p class="mb-0 small">Ada {{ $lowStock }} bahan dengan stok menipis</p>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Aktivitas Terbaru  --}}
+        <div class="row g-3 mb-4">
+            <div class="col-lg-12">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-header bg-white border-0 py-3 rounded-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold mb-0 text-primary">
+                                <i class="fas fa-bell text-primary me-2"></i>Aktivitas Terbaru
+                            </h5>
+                            <button wire:click="refreshActivities" class="btn btn-sm btn-outline-primary" wire:loading.attr="disabled">
+                                <span wire:loading.remove wire:target="refreshActivities"><i class="fas fa-sync-alt me-1"></i> Refresh</span>
+                                <span wire:loading wire:target="refreshActivities"><i class="fas fa-spinner fa-spin me-1"></i> Refreshing...</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        @if(count($recentActivities ?? []) > 0)
+                            <div class="activity-list">
+                                @foreach($recentActivities as $activity)
+                                    <div class="activity-item border-bottom p-4 hover-bg">
+                                        <div class="d-flex align-items-start">
+                                            {{-- Icon --}}
+                                            <div class="activity-icon-wrapper me-3">
+                                                <div class="activity-icon rounded-circle bg-{{ $activity['warna'] }} bg-opacity-10 p-3 d-flex align-items-center justify-content-center">
+                                                    <i class="fas {{ $activity['icon'] }} text-{{ $activity['warna'] }} fs-5"></i>
+                                                </div>
+                                            </div>
+                                            
+                                            {{-- Content --}}
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <h6 class="mb-0 fw-semibold">{{ $activity['judul'] }}</h6>
+                                                    <span class="badge bg-{{ $activity['warna'] }} rounded-pill px-3">
+                                                        {{ ucfirst($activity['jenis']) }}
+                                                    </span>
+                                                </div>
+                                                
+                                                @if($activity['deskripsi'])
+                                                    <p class="mb-2 text-muted small">{{ $activity['deskripsi'] }}</p>
+                                                @endif
+                                                
+                                                <div class="d-flex align-items-center text-muted small">
+                                                    <i class="far fa-clock me-2"></i>
+                                                    <span class="me-3">{{ $activity['time_diff'] }}</span>
+                                                    
+                                                    @if($activity['user'] !== 'System')
+                                                        <i class="far fa-user me-2"></i>
+                                                        <span>{{ $activity['user'] }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="text-center py-5">
+                                <div class="empty-state">
+                                    <i class="fas fa-inbox text-muted opacity-25 mb-3" style="font-size: 4rem;"></i>
+                                    <h6 class="text-muted mb-1">Belum Ada Aktivitas</h6>
+                                    <p class="text-muted small mb-0">Aktivitas akan muncul di sini saat ada perubahan</p>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <style>
+        .header-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+        
+        .header-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .header-icon-box {
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+        }
+
+        .date-box {
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .date-box:hover {
+            background-color: #e9ecef !important;
+            transform: scale(1.05);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+        }
+
+        .icon-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+        }
+
+        .bg-primary-subtle { background-color: rgba(13, 110, 253, 0.1) !important; }
+        .bg-success-subtle { background-color: rgba(25, 135, 84, 0.1) !important; }
+        .bg-warning-subtle { background-color: rgba(255, 193, 7, 0.1) !important; }
+        .bg-info-subtle { background-color: rgba(13, 202, 240, 0.1) !important; }
+
+        /* Activity Styles */
+        .activity-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .activity-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .activity-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .activity-list::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .activity-list::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        .activity-item {
+            transition: all 0.2s ease;
+        }
+
+        .activity-item.hover-bg:hover {
+            background-color: #f8f9fa;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none !important;
+        }
+
+        .activity-icon-wrapper {
+            flex-shrink: 0;
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            transition: transform 0.2s ease;
+        }
+
+        .activity-item:hover .activity-icon {
+            transform: scale(1.1);
+        }
+
+        .empty-state {
+            padding: 2rem 1rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.5rem; }
+            h3 { font-size: 1.75rem; }
+            .icon-box { width: 50px; height: 50px; }
+            .header-icon-box { width: 50px; height: 50px; }
+            .header-icon-box i { font-size: 1.5rem !important; }
+            .date-box { font-size: 0.85rem; }
+            .activity-icon { width: 40px; height: 40px; }
+        }
+    </style>
 </div>
+
+{{-- Scripts untuk auto-refresh --}}
+@push('scripts')
+<script>
+    // Auto refresh aktivitas setiap 30 detik
+    setInterval(function() {
+        if (typeof @this !== 'undefined') {
+            @this.call('refreshActivities');
+        }
+    }, 30000);
+    
+    // Listen untuk event refresh
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('activities-refreshed', () => {
+            console.log('✅ Activities refreshed successfully!');
+        });
+    });
+</script>
+@endpush

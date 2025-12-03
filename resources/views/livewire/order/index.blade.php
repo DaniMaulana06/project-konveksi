@@ -1,6 +1,6 @@
 @section('title', 'List Order')
 
-<div class="container mt-5">
+<div class="container mt-2">
 
     {{-- ALERT --}}
     @if (session()->has('message'))

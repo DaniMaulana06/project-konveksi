@@ -1,6 +1,6 @@
 @section('title', 'List Vendor')
 
-<div class="container mb-5 md-5 mt-5">
+<div class="container mb-5 md-5 mt-2">
     <div class="row">
         <div class="col md-12 mb-3">
             <!-- flash message -->
@@ -21,12 +21,10 @@
             <div class="card shadow-sm border-0 mb-4 rounded-4">
                 <div class="card-body">
                     <input type="text" class="form-control border-primary rounded-pill px-4"
-                        placeholder="Cari nama produk" wire:model.live.debounce="search">
+                        placeholder="Cari nama vendor" wire:model.live="search">
                 </div>
             </div>
             <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
-
-
                 <div class="card-body">
                     <table class="table">
                         <thead>
@@ -41,7 +39,8 @@
                         <tbody>
                             @forelse ($vendors as $index => $vendor)
                                 <tr>
-                                    <td>{{ ($vendors->currentPage() - 1) * $vendors->perPage() + $loop->iteration }}</td>
+                                    <td>{{ ($vendors->currentPage() - 1) * $vendors->perPage() + $loop->iteration }}
+                                    </td>
                                     <td>{{ $vendor->nama_vendor }}</td>
                                     <td>{{ $vendor->barang_vendor }}</td>
                                     <td>{{ $vendor->alamat_vendor }}</td>

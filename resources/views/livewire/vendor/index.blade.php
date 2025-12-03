@@ -1,8 +1,16 @@
 @section('title', 'Vendor')
 
-<div class="container mb-5 md-5 mt-5">
+<div class="container mb-5 md-5 mt-2">
     <div class="row">
         <div class="col md-12 mb-3">
+            <!-- flash message -->
+            @if (session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                    <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            <!-- end flash message -->
             {{-- header --}}
             <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">
                 <div>

@@ -22,8 +22,7 @@
             <form wire:submit.prevent="save">
 
                 <input type="hidden" wire:model="production_list_id">
-                @foreach($inputs as $index => $input)
-
+                @foreach ($inputs as $index => $input)
                     <div class="row border rounded p-3 mb-3 bg-light">
 
                         <!-- Nama Bahan -->
@@ -31,7 +30,7 @@
                             <label>Nama Bahan</label>
                             <select class="form-control" wire:model="inputs.{{ $index }}.material_id">
                                 <option value="">-- Pilih Bahan --</option>
-                                @foreach($materials as $mat)
+                                @foreach ($materials as $mat)
                                     <option value="{{ $mat->id }}">{{ $mat->nama_bahan }}</option>
                                 @endforeach
                             </select>
@@ -40,7 +39,8 @@
                         <!-- Stok -->
                         <div class="col-md-2">
                             <label>Stok</label>
-                            <input type="text" class="form-control" wire:model="inputs.{{ $index }}.stok" readonly>
+                            <input type="text" class="form-control" wire:model="inputs.{{ $index }}.stok"
+                                readonly>
                         </div>
 
                         <!-- Jumlah pakai -->
@@ -52,7 +52,8 @@
                         <!-- Keterangan -->
                         <div class="col-md-3">
                             <label>Keterangan</label>
-                            <input type="text" class="form-control" wire:model="inputs.{{ $index }}.keterangan">
+                            <input type="text" class="form-control"
+                                wire:model="inputs.{{ $index }}.keterangan">
                         </div>
 
                         <!-- Hapus -->
@@ -68,13 +69,17 @@
                 </button>
                 <button class="btn btn-success w-100 mb-5" type="submit">Simpan Semua Bahan</button>
             </form>
-            
-            @if($hasMaterials)
+
+            @if (
+                $hasMaterials &&
+                    $productionList->order->status_order !== 'selesai' &&
+                    $productionList->order->status_order !== 'dikirim')
                 <button wire:click="updateStatus('proses')" class="btn btn-success float-end ms-2">
                     Mulai Produksi
                 </button>
             @endif
-            <a href="{{ route('production.material.list') }}" class="btn btn-m btn-danger float-end" wire:navigate>Batal</a>
+            <a href="{{ route('production.material.list') }}" class="btn btn-m btn-danger float-end"
+                wire:navigate>Batal</a>
         </div>
     </div>
 </div>

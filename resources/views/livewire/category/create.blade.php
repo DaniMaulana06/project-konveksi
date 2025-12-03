@@ -25,7 +25,7 @@
 
                         <div class="d-flex justify-content-end">
 
-                            <a href="/kategori" class="btn btn-m btn-danger px-3 me-3" wire:navigate>Batal</a>
+                            <a href="/kategori" class="btn btn-m btn-danger px-3 me-2" wire:navigate>Batal</a>
                             <button type="submit" class="btn btn-primary float-end">Simpan</button>
 
                         </div>

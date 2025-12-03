@@ -14,6 +14,7 @@ class Order extends Model
         'asal_instansi',
         'jumlah_order',
         'file_panduan',
+        'keterangan',
         'harga_total',
         'status_order',
         'created_by',
@@ -50,9 +51,90 @@ class Order extends Model
 
     protected static function booted()
     {
+        // Yang sudah ada (jangan dihapus)
         static::creating(function ($order) {
             if (auth()->check()) {
                 $order->created_by = auth()->id();
+            }
+        });
+
+        // isi otomatis aktivitas ketika order dibuat
+        static::created(function ($order) {
+            \App\Models\Aktivitas::catat(
+                jenis: 'order',
+                judul: 'Order Baru Dibuat',
+                deskripsi: "Order #{$order->id} - {$order->nama_order} dari {$order->nama_customer}",
+                icon: 'fa-shopping-cart',
+                warna: 'success',
+                reference: $order
+            );
+        });
+
+        // isi otomatis aktivitas ketika order diupdate
+        static::updated(function ($order) {
+            // Cek apakah status_order yang berubah
+            if ($order->isDirty('status_order')) {
+                $statusText = [
+                    'pending' => 'Menunggu Konfirmasi',
+                    'proses' => 'Sedang Diproses',
+                    'selesai' => 'Selesai',
+                    'dikirim' => 'Sedang Dikirim'
+                ];
+
+                $warna = [
+                    'pending' => 'warning',
+                    'proses' => 'info',
+                    'selesai' => 'success',
+                    'dikirim' => 'primary'
+                ];
+
+                $status = $order->status_order;
+
+                \App\Models\Aktivitas::catat(
+                    jenis: 'order',
+                    judul: 'Status Order Diubah',
+                    deskripsi: "Order #{$order->id} - {$statusText[$status]}",
+                    icon: 'fa-sync-alt',
+                    warna: $warna[$status] ?? 'info',
+                    reference: $order
+                );
+            } else {
+                // Catat aktivitas untuk perubahan data order lainnya (bukan status)
+                // Hanya catat jika ada field yang benar-benar berubah
+                if ($order->isDirty()) {
+                    $changedFields = [];
+
+                    // Daftar field yang akan dicatat perubahannya
+                    $trackableFields = [
+                        'nama_order' => 'Nama Order',
+                        'nama_customer' => 'Nama Customer',
+                        'no_telp' => 'No. Telepon',
+                        'asal_instansi' => 'Asal Instansi',
+                        'jumlah_order' => 'Jumlah Order',
+                        'harga_total' => 'Harga Total',
+                        'keterangan' => 'Keterangan',
+                        'file_panduan' => 'File Panduan'
+                    ];
+
+                    foreach ($trackableFields as $field => $label) {
+                        if ($order->isDirty($field)) {
+                            $changedFields[] = $label;
+                        }
+                    }
+
+                    if (!empty($changedFields)) {
+                        $fieldList = implode(', ', $changedFields);
+
+                        \App\Models\Aktivitas::catat(
+                            jenis: 'order',
+                            judul: 'Order Diperbarui',
+                            deskripsi: "Order #{$order->id} - {$order->nama_order} diperbarui ({$fieldList})",
+                            icon: 'fa-edit',
+                            warna: 'info',
+                            reference: $order
+                        );
+                    }
+                }
             }
         });
     }
@@ -63,9 +145,7 @@ class Order extends Model
     }
 
     public function productionList()
-{
-    return $this->hasOne(\App\Models\ProductionListModel::class, 'order_id');
-}
-
-
+    {
+        return $this->hasOne(\App\Models\ProductionListModel::class, 'order_id');
+    }
 }

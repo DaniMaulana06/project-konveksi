@@ -1,11 +1,11 @@
 @section('title')
-Login
+    Login
 @endsection
 
-<div class="">
+<div>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-5">
+            <div class="col-md-5 mt-5">
 
                 {{-- Alert --}}
                 @if (session()->has('message'))
@@ -15,8 +15,8 @@ Login
                     </div>
                 @endif
 
-                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                    <div class="card-header bg-primary text-white text-center py-4">
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden mt-5">
+                    <div class="card-header bg-primary text-white text-center py-2">
                         <h4 class="mb-0 fw-bold">Selamat Datang</h4>
                         <small class="opacity-75">Silakan login untuk melanjutkan</small>
                     </div>
@@ -29,8 +29,7 @@ Login
                                 <label class="form-label fw-semibold">Email</label>
                                 <input type="email"
                                     class="form-control rounded-3 @error('email') is-invalid @enderror"
-                                    wire:model.defer="email"
-                                    placeholder="contoh@email.com">
+                                    wire:model.defer="email" placeholder="contoh@email.com">
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -41,8 +40,7 @@ Login
                                 <label class="form-label fw-semibold">Password</label>
                                 <input type="password"
                                     class="form-control rounded-3 @error('password') is-invalid @enderror"
-                                    wire:model.defer="password"
-                                    placeholder="••••••••">
+                                    wire:model.defer="password" placeholder="********">
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -63,7 +61,8 @@ Login
                         <div class="text-center mt-4">
                             <small class="text-muted">
                                 Belum punya akun?
-                                <a href="{{ route('register') }}" class="text-decoration-none fw-semibold" wire:navigate>
+                                <a href="{{ route('register') }}" class="text-decoration-none fw-semibold"
+                                    wire:navigate>
                                     Daftar
                                 </a>
                             </small>

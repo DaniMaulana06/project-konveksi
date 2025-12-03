@@ -129,6 +129,13 @@
             <div class="content">
                 {{ $slot }}
             </div>
+
+            <!-- Footer -->
+            <footer class=" text-center text-muted py-2 mt-2 shadow-m">
+                <div class="container">
+                    <p class="mb-0">&copy; {{ date('Y') }} Konveksi Pelajar. All rights reserved.</p>
+                </div>
+            </footer>
         </div>
     @else
         <!-- Jika user belum login, hanya tampilkan content tanpa navbar -->
