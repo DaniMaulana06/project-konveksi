@@ -1,107 +1,98 @@
 @section('title')
-Register
+    Register
 @endsection
 
-<div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card border-0 shadow-lg rounded-4 overflow-hidden mt-3">
-                    <div class="card-header bg-primary text-white text-center py-2">
-                        <h4 class="mb-0 fw-bold">Buat Akun Baru</h4>
-                        <small class="opacity-75">Lengkapi data untuk mendaftar</small>
-                    </div>
+<div class="vh-100 d-flex align-items-center justify-content-center overflow-hidden"
+    style="background: linear-gradient(135deg, #1e3a8a, #2563eb); margin: 0; padding: 0; position: relative;">
 
-                    <div class="card-body p-4">
+    <div class="card border-0 shadow-lg rounded-4" style="width: 480px; max-height: 95vh; overflow-y: auto;">
 
-                        <form wire:submit.prevent="register">
+        {{-- HEADER --}}
+        <div class="text-center py-4 border-bottom">
+            <img src="{{ asset('storage/logo/logo.png') }}" alt="Logo" style="width:64px; height:64px;" class="mb-2">
 
-                            {{-- Nama --}}
-                            <div class="mb-2">
-                                <label class="form-label fw-semibold">Nama</label>
-                                <input type="text"
-                                    class="form-control rounded-3 @error('name') is-invalid @enderror"
-                                    wire:model.defer="name"
-                                    placeholder="Nama lengkap">
-                                @error('name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+            <h4 class="fw-bold mb-1">Buat Akun Baru</h4>
+            <small class="text-muted">Lengkapi data untuk mendaftar</small>
+        </div>
 
-                            {{-- Email --}}
-                            <div class="mb-2">
-                                <label class="form-label fw-semibold">Email</label>
-                                <input type="email"
-                                    class="form-control rounded-3 @error('email') is-invalid @enderror"
-                                    wire:model.defer="email"
-                                    placeholder="contoh@email.com">
-                                @error('email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+        <div class="card-body px-4 py-4">
 
-                            {{-- Role --}}
-                            <div class="mb-2">
-                                <label class="form-label fw-semibold">Role</label>
-                                <select
-                                    class="form-select rounded-3 @error('role') is-invalid @enderror"
-                                    wire:model.defer="role">
-                                    <option value="">-- Pilih Role --</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="produksi">Produksi</option>
-                                </select>
-                                @error('role')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+            <form wire:submit.prevent="register">
 
-                            {{-- Password --}}
-                            <div class="mb-2">
-                                <label class="form-label fw-semibold">Password</label>
-                                <input type="password"
-                                    class="form-control rounded-3 @error('password') is-invalid @enderror"
-                                    wire:model.defer="password"
-                                    placeholder="********">
-                                @error('password')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            {{-- Konfirmasi Password --}}
-                            <div class="mb-2">
-                                <label class="form-label fw-semibold">Konfirmasi Password</label>
-                                <input type="password"
-                                    class="form-control rounded-3"
-                                    wire:model.defer="password_confirmation"
-                                    placeholder="Ulangi password">
-                            </div>
-
-                            {{-- Button --}}
-                            <div class="d-grid mt-4">
-                                <button class="btn btn-primary btn-lg rounded-3">
-                                    <span wire:loading.remove>Daftar</span>
-                                    <span wire:loading>
-                                        <span class="spinner-border spinner-border-sm"></span>
-                                        Memproses...
-                                    </span>
-                                </button>
-                            </div>
-
-                        </form>
-
-                        <div class="text-center mt-4">
-                            <small class="text-muted">
-                                Sudah punya akun?
-                                <a href="{{ route('login') }}" class="text-decoration-none fw-semibold" wire:navigate>
-                                    Login
-                                </a>
-                            </small>
-                        </div>
-
-                    </div>
+                {{-- NAMA --}}
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold mb-1">Nama</label>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror"
+                        wire:model.defer="name" placeholder="Nama lengkap">
+                    @error('name')
+                        <div class="invalid-feedback small">{{ $message }}</div>
+                    @enderror
                 </div>
 
+                {{-- EMAIL --}}
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold mb-1">Email</label>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror"
+                        wire:model.defer="email" placeholder="contoh@email.com">
+                    @error('email')
+                        <div class="invalid-feedback small">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- ROLE --}}
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold mb-1">Role</label>
+                    <select class="form-select @error('role') is-invalid @enderror" wire:model.defer="role">
+                        <option value="">-- Pilih Role --</option>
+                        <option value="admin">Admin</option>
+                        <option value="produksi">Produksi</option>
+                        <option value="owner">Owner</option>
+                    </select>
+                    @error('role')
+                        <div class="invalid-feedback small">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- PASSWORD --}}
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold mb-1">Password</label>
+                    <input type="password" class="form-control @error('password') is-invalid @enderror"
+                        wire:model.defer="password" placeholder="********">
+                    @error('password')
+                        <div class="invalid-feedback small">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- KONFIRMASI PASSWORD --}}
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold mb-1">Konfirmasi Password</label>
+                    <input type="password" class="form-control" wire:model.defer="password_confirmation"
+                        placeholder="Ulangi password">
+                </div>
+
+                {{-- BUTTON --}}
+                <div class="d-grid mt-4">
+                    <button class="btn btn-primary rounded-3 py-2">
+                        <span wire:loading.remove>Daftar</span>
+                        <span wire:loading>
+                            <span class="spinner-border spinner-border-sm"></span>
+                            Memproses...
+                        </span>
+                    </button>
+                </div>
+
+            </form>
+
+            {{-- LOGIN LINK --}}
+            <div class="text-center mt-4">
+                <small class="text-muted">
+                    Sudah punya akun?
+                    <a href="{{ route('login') }}" class="text-decoration-none fw-semibold" wire:navigate>
+                        Login
+                    </a>
+                </small>
             </div>
+
         </div>
     </div>
 </div>

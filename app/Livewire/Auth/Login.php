@@ -44,6 +44,8 @@ class Login extends Component
                 return redirect()->intended('/admin/dashboard');
             } elseif (Auth::user()->role === 'produksi') {
                 return redirect()->intended('/produksi/dashboard');
+            }elseif (Auth::user()->role === 'owner') {
+                return redirect()->intended('/owner/dashboard');
             }
         }
 

@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::middleware('guest')->get('/login', Login::class)->name('login');
-Route::middleware('guest')->get('/register', Register::class)->name('register');
+// Route::middleware('guest')->get('/register', Register::class)->name('register');
 
 Route::post('/logout', function () {
     Auth::logout();
@@ -31,6 +31,7 @@ Route::post('/logout', function () {
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', \App\Livewire\Dashboard\Admin::class)->name('dashboard.admin');
+
     Route::prefix('order')->group(function () {
         Route::get('/', Index::class)->name('order.index');
         Route::get('/create', \App\Livewire\Order\Create::class)->name('order.create');
@@ -71,15 +72,30 @@ Route::middleware(['auth', 'role:produksi'])->group(function () {
     Route::get('/produksi', ProductionList::class)->name('production.index');
 
     Route::get('/produksi/order-detail/{orderId}', OrderDetailList::class)
-    ->name('production.order.detail.list');
+        ->name('production.order.detail.list');
 
     Route::get('/produksi/order-detail/{orderId}/create', OrderDetailCreate::class)
-    ->name('production.order.detail.create');
+        ->name('production.order.detail.create');
 
     Route::get('/produksi/material/{orderId}', ProductionMaterialForm::class)
-    ->name('production.material.form');
+        ->name('production.material.form');
 
     Route::get('/produksi/material-list', ProductionMaterialList::class)->name('production.material.list');
 
-    
+
+});
+
+Route::middleware(['auth', 'role:owner'])->group(function () {
+    Route::get('/owner/dashboard', \App\Livewire\Owner\Dashboard::class)->name('dashboard.owner');
+    Route::get('/owner/vendor', \App\Livewire\Owner\Vendor::class)->name('owner.vendor');
+    Route::get('/owner/kategori', \App\Livewire\Owner\Kategori::class)->name('owner.kategori');
+    Route::get('/owner/produk', \App\Livewire\Owner\Produk::class)->name('owner.produk');
+    Route::get('/owner/order', \App\Livewire\Owner\OwnerOrder::class)->name('owner.order');
+    Route::get('/owner/order/{id}', \App\Livewire\Owner\Detailorder::class)->name('owner.order.detail');
+
+    Route::prefix('owner/user')->group(function () {
+        Route::get('/users', \App\Livewire\Owner\User\Index::class)->name('owner.user.index');
+        Route::get('/create', \App\Livewire\Owner\User\Create::class)->name('owner.user.create');
+        Route::get('/edit/{id}', \App\Livewire\Owner\User\Edit::class)->name('owner.user.edit');
     });
+});

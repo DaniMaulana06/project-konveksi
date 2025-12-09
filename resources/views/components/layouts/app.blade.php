@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body>
+<body style="margin: 0; padding: 0; overflow-x: hidden;">
     @auth
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
@@ -103,6 +103,53 @@
                             </a>
                         </div>
                     </li>
+                @elseif(Auth::user()->role === 'owner')
+                    <div class="nav-item">
+                        <a href="/owner/dashboard"
+                            class="{{ request()->routeIs(patterns: 'dashboard.owner') ? 'active' : '' }}"
+                            title="Dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </div>
+                    <li class="nav-section">
+                        <div class="nav-section-title">Owner</div>
+                        <div class="nav-item">
+                            <a href="/owner/vendor" class="{{ request()->routeIs('owner.vendor') ? 'active' : '' }}"
+                                title="Vendor">
+                                <i class="fas fa-store"></i>
+                                <span class="nav-text">Vendor</span>
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="/owner/kategori" class="{{ request()->routeIs('owner.kategori') ? 'active' : '' }}"
+                                title="Kategori">
+                                <i class="fas fa-list-alt"></i>
+                                <span class="nav-text">Kategori</span>
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="/owner/produk" class="{{ request()->routeIs('owner.produk') ? 'active' : '' }}"
+                                title="Produk">
+                                <i class="fas fa-box"></i>
+                                <span class="nav-text">Produk</span>
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="/owner/order" class="{{ request()->routeIs('owner.order') ? 'active' : '' }}"
+                                title="Order">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="nav-text">Order</span>
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="{{ route('owner.user.index') }}"
+                                class="{{ request()->routeIs('owner.user*') ? 'active' : '' }}" title="Manajemen User">
+                                <i class="fas fa-user"></i>
+                                <span class="nav-text">Manajemen User</span>
+                            </a>
+                        </div>
+                    </li>
                 @endif
             </ul>
         </aside>
@@ -139,13 +186,15 @@
         </div>
     @else
         <!-- Jika user belum login, hanya tampilkan content tanpa navbar -->
-        <div style="width: 100%; padding: 20px;">
+        <div style="width: 100%; height: 100vh; margin: 0; padding: 0; overflow: hidden;">
             {{ $slot }}
         </div>
     @endauth
 
     @livewireScripts
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+    </script>
     @stack('scripts')
 </body>
 <script>

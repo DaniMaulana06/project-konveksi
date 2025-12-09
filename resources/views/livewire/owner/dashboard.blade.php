@@ -1,4 +1,4 @@
-@section('title', 'Dashboard Admin')
+@section('title', 'Dashboard Owner')
 
 {{-- Dashboard dengan Toast Notification Real-time & Grafik Statistik --}}
 <div>

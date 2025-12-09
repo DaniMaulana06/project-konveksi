@@ -2,76 +2,64 @@
     Login
 @endsection
 
-<div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-5 mt-5">
+<div class="vh-100 d-flex align-items-center justify-content-center overflow-hidden"
+    style="background: linear-gradient(135deg, #1e3a8a, #2563eb); margin: 0; padding: 0; position: relative;">
 
-                {{-- Alert --}}
-                @if (session()->has('message'))
-                    <div class="alert alert-success alert-dismissible fade show">
-                        {{ session('message') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                @endif
+    <div class="card border-0 shadow-lg rounded-4" style="width: 420px;">
 
-                <div class="card border-0 shadow-lg rounded-4 overflow-hidden mt-5">
-                    <div class="card-header bg-primary text-white text-center py-2">
-                        <h4 class="mb-0 fw-bold">Selamat Datang</h4>
-                        <small class="opacity-75">Silakan login untuk melanjutkan</small>
-                    </div>
+        {{-- HEADER --}}
+        <div class="text-center py-4 border-bottom">
+            <img src="{{ asset('storage/logo/logo.png') }}" alt="Logo" style="width:64px; height:64px;" class="mb-2">
 
-                    <div class="card-body p-4">
+            <h4 class="fw-bold mb-1">Selamat Datang</h4>
+            <small class="text-muted">Silakan login untuk melanjutkan</small>
+        </div>
 
-                        <form wire:submit.prevent="login">
-                            {{-- Email --}}
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Email</label>
-                                <input type="email"
-                                    class="form-control rounded-3 @error('email') is-invalid @enderror"
-                                    wire:model.defer="email" placeholder="contoh@email.com">
-                                @error('email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+        <div class="card-body px-4 py-4">
 
-                            {{-- Password --}}
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Password</label>
-                                <input type="password"
-                                    class="form-control rounded-3 @error('password') is-invalid @enderror"
-                                    wire:model.defer="password" placeholder="********">
-                                @error('password')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+            {{-- ALERT --}}
+            @if (session()->has('message'))
+                <div class="alert alert-success alert-dismissible fade show small">
+                    {{ session('message') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
 
-                            {{-- Button --}}
-                            <div class="d-grid mt-4">
-                                <button class="btn btn-primary btn-lg rounded-3">
-                                    <span wire:loading.remove>Login</span>
-                                    <span wire:loading>
-                                        <span class="spinner-border spinner-border-sm"></span>
-                                        Memproses...
-                                    </span>
-                                </button>
-                            </div>
-                        </form>
+            <form wire:submit.prevent="login">
 
-                        <div class="text-center mt-4">
-                            <small class="text-muted">
-                                Belum punya akun?
-                                <a href="{{ route('register') }}" class="text-decoration-none fw-semibold"
-                                    wire:navigate>
-                                    Daftar
-                                </a>
-                            </small>
-                        </div>
-
-                    </div>
+                {{-- EMAIL --}}
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold mb-1">Email</label>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror"
+                        wire:model.defer="email" placeholder="contoh@email.com">
+                    @error('email')
+                        <div class="invalid-feedback small">{{ $message }}</div>
+                    @enderror
                 </div>
 
-            </div>
+                {{-- PASSWORD --}}
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold mb-1">Password</label>
+                    <input type="password" class="form-control @error('password') is-invalid @enderror"
+                        wire:model.defer="password" placeholder="********">
+                    @error('password')
+                        <div class="invalid-feedback small">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- BUTTON --}}
+                <div class="d-grid mt-4">
+                    <button class="btn btn-primary rounded-3 py-2">
+                        <span wire:loading.remove>Login</span>
+                        <span wire:loading>
+                            <span class="spinner-border spinner-border-sm"></span>
+                            Memproses...
+                        </span>
+                    </button>
+                </div>
+
+            </form>
+
         </div>
     </div>
 </div>
