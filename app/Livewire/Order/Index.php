@@ -32,8 +32,10 @@ class Index extends Component
     }
     public function render()
     {
-        $orders = Order::query()
-            ->when(
+        $orders = Order::with([
+            'product.category', // ← eager loading
+            'product'
+        ])->when(
                 $this->search,
                 fn($query) =>
                 $query->where('nama_order', 'like', '%' . $this->search . '%')

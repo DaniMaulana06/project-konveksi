@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use URL;
+use View;
+use App\View\Composers\NavbarCuacaComposer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer('components.layouts.app', NavbarCuacaComposer::class);
     }
 }

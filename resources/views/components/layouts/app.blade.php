@@ -163,13 +163,19 @@
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>
-                <div class="user-info">
-                    <span class="user-name fw-bold">Halo, {{ Auth::user()->name }}</span>
-                    <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
-                        @csrf
-                        <button type="submit" class="btn btn-danger btn-sm logout-btn">Logout</button>
-                    </form>
-                </div>
+                <div class="user-info d-flex justify-content-between align-items-center w-100">
+                    <!-- CUACA (KIRI) -->
+                    <div class="fw-bold">
+                        {{ $cuacaNavbar['kota'] }} | {{ $cuacaNavbar['suhu'] }}°C
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="user-name fw-bold">Halo, {{ Auth::user()->name }}</span>
+                        <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+                            @csrf
+                            <button type="submit" class="btn btn-danger btn-sm logout-btn">Logout</button>
+                        </form>
+                    </div>
             </nav>
 
             <!-- Content Area -->

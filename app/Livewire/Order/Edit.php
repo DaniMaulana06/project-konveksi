@@ -37,6 +37,11 @@ class Edit extends Component
 
         // file lama disimpan ke variabel
         $this->file_panduan_lama = $this->order->file_panduan;
+
+        if ($this->order->status_order === 'selesai' || $this->order->status_order === 'dikirim') {
+            session()->flash('error', 'Order yang sudah ' . $this->order->status_order . ' tidak dapat diedit!');
+            return redirect()->route('order.index');
+        }
     }
 
 

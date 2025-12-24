@@ -24,8 +24,9 @@ class Index extends Component
     }
     public function render()
     {
-        $products = Product::query()
-            ->when(
+        $products = Product::with([
+            'category',
+        ])->when(
                 $this->search,
                 fn($query) =>
                 $query->where('nama_produk', 'like', '%' . $this->search . '%')

@@ -29,7 +29,7 @@ class OrderDetailList extends Component
     {
         $order = Order::with([
             'product',
-            'productionList.materials.material'
+            'productionList.materials.material',
         ])->findOrFail($this->orderId);
 
         return view('livewire.production.order-detail-list', [
